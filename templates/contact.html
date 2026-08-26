@@ -1,1 +1,50 @@
 {% extends "base.html" %}{% block title %}Contact BizFlow SA{% endblock %}{% block content %}<div class="card" style="max-width:700px;margin:auto"><h2>Tell us about your business</h2><p class="meta">Fill in your details and BizFlow SA will get back to you.</p><form method="POST" action="/contact"><label>Name</label><input name="name" required><label>Email</label><input type="email" name="email"><label>Phone</label><input name="phone"><label>What do you need help with?</label><textarea name="message" placeholder="Tell us about your business or what you want to improve..."></textarea><button class="primary">Send Enquiry</button></form>{% if success %}<div class="response">Thanks — your enquiry has been received.</div>{% endif %}</div>{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Contact BizFlow SA{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width:700px; margin:auto;">
+
+    <h2>Tell us about your business</h2>
+
+    <p class="meta">
+        Fill in your details and BizFlow SA will get back to you.
+    </p>
+
+    <form method="POST" action="/contact">
+
+        <label>Name</label>
+        <input name="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email">
+
+        <label>Phone</label>
+        <input name="phone">
+
+        <label>What do you need help with?</label>
+
+        <textarea
+            name="message"
+            placeholder="Tell us about your business or what you want to improve..."
+        ></textarea>
+
+        <button class="primary">
+            Send Enquiry
+        </button>
+
+    </form>
+
+    {% if success %}
+
+    <div class="response">
+        Thanks — your enquiry has been received.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
