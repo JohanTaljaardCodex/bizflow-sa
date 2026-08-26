@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}BizFlow SA{% endblock %} | AI Operator</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><div class="app-shell">
+<aside class="sidebar"><div class="sidebar-top">
+<a href="{{ url_for('dashboard') }}" class="brand"><div class="brand-logo">B</div><div class="brand-text"><strong>BizFlow</strong><span>SA</span></div></a>
+<div class="sidebar-label">WORKSPACE</div><nav class="sidebar-nav">
+<a href="{{ url_for('dashboard') }}" class="nav-item {% if request.endpoint in ['dashboard','daily_priorities'] %}active{% endif %}">⌂ <span>Dashboard</span></a>
+<a href="{{ url_for('leads_page') }}" class="nav-item {% if request.endpoint in ['leads_page','lead_detail'] %}active{% endif %}">◎ <span>Leads</span></a>
+<a href="{{ url_for('customers_page') }}" class="nav-item {% if request.endpoint=='customers_page' %}active{% endif %}">◉ <span>Customers</span></a>
+<a href="{{ url_for('tasks_page') }}" class="nav-item {% if request.endpoint=='tasks_page' %}active{% endif %}">✓ <span>Tasks</span>{% if nav_task_count>0 %}<span class="nav-badge">{{ nav_task_count }}</span>{% endif %}</a>
+<a href="{{ url_for('dashboard') }}#overdue-followups" class="nav-item">! <span>Overdue</span>{% if nav_overdue_count>0 %}<span class="nav-badge nav-badge-orange">{{ nav_overdue_count }}</span>{% endif %}</a>
+<div class="sidebar-label second">MARKETING</div>
+<a href="{{ url_for('content_page') }}" class="nav-item {% if request.endpoint=='content_page' %}active{% endif %}">✦ <span>Content</span></a>
+<a href="{{ url_for('approvals_page') }}" class="nav-item {% if request.endpoint=='approvals_page' %}active{% endif %}">✓ <span>Approvals</span>{% if nav_approval_count>0 %}<span class="nav-badge nav-badge-red">{{ nav_approval_count }}</span>{% endif %}</a>
+<div class="sidebar-label second">SYSTEM</div>
+<a href="{{ url_for('activity_page') }}" class="nav-item {% if request.endpoint=='activity_page' %}active{% endif %}">↻ <span>Activity</span></a>
+<a href="{{ url_for('contact_page') }}" class="nav-item {% if request.endpoint=='contact_page' %}active{% endif %}">↗ <span>Lead Form</span></a>
+</nav></div>
+<div class="sidebar-bottom"><div class="operator-card"><div class="operator-row"><div class="operator-avatar">AI</div><div><div class="operator-name">BizFlow Operator</div><div class="operator-state"><span class="status-dot status-{{ operator.status_class }}"></span>{{ operator.status }}</div><div class="operator-last-seen">{{ operator.last_seen_text }}</div></div></div></div><div class="version">BizFlow SA · Operator v1</div></div>
+</aside>
+<main class="main"><header class="topbar"><div><div class="eyebrow">BIZFLOW SA</div><h1>{{ self.title() }}</h1><p class="subtitle">AI-powered business operations</p></div><div class="topbar-actions"><a href="{{ url_for('contact_page') }}" class="top-action">+ New Lead</a><div class="operator-online operator-{{ operator.status_class }}"><span class="status-dot status-{{ operator.status_class }}"></span>{{ operator.status }}</div></div></header><section class="page-content">{% block content %}{% endblock %}</section></main>
+</div></body></html>

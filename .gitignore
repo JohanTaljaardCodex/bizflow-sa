@@ -1,0 +1,10 @@
+@"
+.env
+.venv/
+__pycache__/
+*.pyc
+bizflow.db
+*.db
+.vscode/
+.idea/
+"@ | Set-Content .gitignore

@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}Activity{% endblock %}{% block content %}<div class="card"><h2>Operator Activity</h2>{% for i in activity %}<div class="activity-item"><div class="activity-title">{{ i[0] }}</div><div class="activity-text">{{ i[1] }}</div><div class="activity-time">{{ i[2] }}</div></div>{% else %}<p>No activity yet.</p>{% endfor %}</div>{% endblock %}
