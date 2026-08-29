@@ -1,49 +1,104 @@
-{% extends "base.html" %}{% block title %}Contact BizFlow SA{% endblock %}{% block content %}<div class="card" style="max-width:700px;margin:auto"><h2>Tell us about your business</h2><p class="meta">Fill in your details and BizFlow SA will get back to you.</p><form method="POST" action="/contact"><label>Name</label><input name="name" required><label>Email</label><input type="email" name="email"><label>Phone</label><input name="phone"><label>What do you need help with?</label><textarea name="message" placeholder="Tell us about your business or what you want to improve..."></textarea><button class="primary">Send Enquiry</button></form>{% if success %}<div class="response">Thanks — your enquiry has been received.</div>{% endif %}</div>{% endblock %}
 {% extends "base.html" %}
 
 {% block title %}Contact BizFlow SA{% endblock %}
 
 {% block content %}
 
-<div class="card" style="max-width:700px; margin:auto;">
+<div class="card" style="max-width: 720px; margin: 0 auto;">
 
-    <h2>Tell us about your business</h2>
+    <div class="section-eyebrow">
+        GET STARTED
+    </div>
+
+    <h2>
+        Tell us about your business
+    </h2>
 
     <p class="meta">
-        Fill in your details and BizFlow SA will get back to you.
+        Tell BizFlow SA what you need help with and we'll get back to you.
     </p>
 
-    <form method="POST" action="/contact">
 
-        <label>Name</label>
-        <input name="name" required>
+    {% if success %}
 
-        <label>Email</label>
-        <input type="email" name="email">
+    <div class="success-state" style="margin-bottom: 20px;">
 
-        <label>Phone</label>
-        <input name="phone">
+        <div class="success-icon">
+            ✓
+        </div>
 
-        <label>What do you need help with?</label>
+        <div>
+            <strong>
+                Enquiry received
+            </strong>
+
+            <p>
+                Thanks — your details have been added to BizFlow.
+            </p>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        action="{{ url_for('contact_page') }}"
+    >
+
+        <label>
+            Name
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Your name"
+            required
+        >
+
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="you@business.co.za"
+        >
+
+
+        <label>
+            Phone
+        </label>
+
+        <input
+            type="text"
+            name="phone"
+            placeholder="082 123 4567"
+        >
+
+
+        <label>
+            What do you need help with?
+        </label>
 
         <textarea
             name="message"
-            placeholder="Tell us about your business or what you want to improve..."
+            placeholder="Tell us about your business and what you'd like to improve..."
         ></textarea>
 
-        <button class="primary">
+
+        <button
+            type="submit"
+            class="primary"
+        >
             Send Enquiry
         </button>
 
     </form>
-
-    {% if success %}
-
-    <div class="response">
-        Thanks — your enquiry has been received.
-    </div>
-
-    {% endif %}
 
 </div>
 
