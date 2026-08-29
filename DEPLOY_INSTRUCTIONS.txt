@@ -1,0 +1,85 @@
+BIZFLOW SA PUBLIC WEBSITE UPGRADE
+================================
+
+WHAT THIS UPGRADE DOES
+----------------------
+1. Makes / the public BizFlow SA customer website.
+2. Adds:
+   /growth-system
+   /how-it-works
+   /pricing
+   /contact
+3. Moves the private operator dashboard to:
+   /operator
+4. Adds password protection for the operator.
+5. Keeps website enquiries flowing into the existing leads table.
+6. Keeps the existing leads/prospects/customers/tasks/content/approvals/activity system.
+
+FILES TO COPY
+-------------
+app.py
+templates/base.html
+templates/public_base.html
+templates/home.html
+templates/growth_system.html
+templates/how_it_works.html
+templates/pricing.html
+templates/contact.html
+templates/operator_login.html
+static/style.css
+
+IMPORTANT RENDER ENVIRONMENT VARIABLES
+--------------------------------------
+Add these to the existing bizflow-sa Render Web Service:
+
+OPERATOR_PASSWORD
+    Set this to a strong password you will use for /operator/login.
+
+SECRET_KEY
+    Set this to a long random secret string.
+    Example format only:
+    7f9b...use-a-long-random-value...21a
+
+DO NOT put real secrets in GitHub.
+
+LOCAL DEFAULT
+-------------
+If OPERATOR_PASSWORD is not set locally, the local password is:
+bizflow-local
+
+Do not rely on that default online.
+
+DEPLOY
+------
+After copying the files:
+
+git add .
+git commit -m "Add public BizFlow SA Growth System website"
+git push
+
+Render should redeploy automatically.
+
+LIVE TEST
+---------
+1. Open:
+   https://YOUR-RENDER-URL/
+
+2. Test:
+   Growth System
+   How It Works
+   Packages
+   Contact
+
+3. Submit one public enquiry.
+
+4. Go to:
+   https://YOUR-RENDER-URL/operator/login
+
+5. Sign in with OPERATOR_PASSWORD.
+
+6. Confirm the enquiry appears under Leads.
+
+NOTE
+----
+This is an MVP offer page. No payment checkout has been added yet.
+Pricing is intentionally enquiry-based until the offer is validated.

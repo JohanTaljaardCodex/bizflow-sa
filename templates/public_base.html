@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <meta
+        name="description"
+        content="BizFlow SA is an AI-powered Small Business Growth System helping South African businesses find opportunities, follow up faster, automate busy work and grow."
+    >
+
+    <title>
+        {% block title %}BizFlow SA{% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body class="public-body">
+
+<header class="public-header">
+
+    <div class="public-nav">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="public-brand"
+        >
+            <div class="brand-logo">
+                B
+            </div>
+
+            <div class="brand-text public-brand-text">
+                <strong>BizFlow</strong>
+                <span>SA</span>
+            </div>
+        </a>
+
+
+        <nav class="public-links">
+
+            <a href="{{ url_for('growth_system') }}">
+                Growth System
+            </a>
+
+            <a href="{{ url_for('how_it_works') }}">
+                How It Works
+            </a>
+
+            <a href="{{ url_for('pricing') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('contact_page') }}">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="public-nav-actions">
+
+            <a
+                href="{{ url_for('operator_login') }}"
+                class="public-login"
+            >
+                Operator Login
+            </a>
+
+            <a
+                href="{{ url_for('contact_page') }}"
+                class="public-cta-small"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+
+<footer class="public-footer">
+
+    <div class="public-footer-inner">
+
+        <div>
+            <div class="public-footer-brand">
+                BizFlow SA
+            </div>
+
+            <p>
+                AI-powered systems built to help small
+                businesses grow smarter.
+            </p>
+        </div>
+
+
+        <div class="public-footer-links">
+
+            <a href="{{ url_for('growth_system') }}">
+                Growth System
+            </a>
+
+            <a href="{{ url_for('how_it_works') }}">
+                How It Works
+            </a>
+
+            <a href="{{ url_for('pricing') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('contact_page') }}">
+                Get Started
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="public-footer-bottom">
+        © 2026 BizFlow SA. South Africa.
+    </div>
+
+</footer>
+
+</body>
+</html>

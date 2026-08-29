@@ -1,105 +1,195 @@
-{% extends "base.html" %}
+{% extends "public_base.html" %}
 
-{% block title %}Contact BizFlow SA{% endblock %}
+{% block title %}Get Started | BizFlow SA{% endblock %}
 
 {% block content %}
 
-<div class="card" style="max-width: 720px; margin: 0 auto;">
+<section class="public-page-hero contact-hero">
 
-    <div class="section-eyebrow">
-        GET STARTED
+    <div class="public-container narrow">
+
+        <span class="public-kicker">
+            GET STARTED
+        </span>
+
+        <h1>
+            Tell us where your business
+            needs help growing.
+        </h1>
+
+        <p>
+            Give us a quick picture of the business.
+            Your enquiry goes directly into the BizFlow
+            system so we can follow up properly.
+        </p>
+
     </div>
 
-    <h2>
-        Tell us about your business
-    </h2>
-
-    <p class="meta">
-        Tell BizFlow SA what you need help with and we'll get back to you.
-    </p>
+</section>
 
 
-    {% if success %}
+<section class="public-section contact-section">
 
-    <div class="success-state" style="margin-bottom: 20px;">
+    <div class="public-container contact-layout">
 
-        <div class="success-icon">
-            ✓
+        <div class="contact-copy">
+
+            <span class="public-kicker">
+                WHAT WE CAN HELP WITH
+            </span>
+
+            <h2>
+                Start with the biggest bottleneck.
+            </h2>
+
+            <div class="contact-points">
+
+                <div>
+                    <span>✓</span>
+                    <p>Not getting enough leads or opportunities</p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>Slow or inconsistent customer follow-up</p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>Marketing stops when the business gets busy</p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>Too much repetitive admin</p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>No clear view of sales work and priorities</p>
+                </div>
+
+            </div>
+
         </div>
 
-        <div>
-            <strong>
-                Enquiry received
-            </strong>
 
-            <p>
-                Thanks — your details have been added to BizFlow.
+        <div class="public-form-card">
+
+            {% if success %}
+
+            <div class="public-success">
+
+                <div>
+                    ✓
+                </div>
+
+                <h3>
+                    Enquiry received.
+                </h3>
+
+                <p>
+                    Your details are now in BizFlow.
+                    We will follow up with you.
+                </p>
+
+            </div>
+
+            {% else %}
+
+            <h2>
+                Tell us about your business
+            </h2>
+
+            <p class="public-form-intro">
+                A few details are enough to get started.
             </p>
+
+
+            {% if error %}
+
+            <div class="public-form-error">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="{{ url_for('contact_page') }}"
+            >
+
+                <label>
+                    Your name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                >
+
+
+                <label>
+                    Business name
+                </label>
+
+                <input
+                    type="text"
+                    name="business_name"
+                    placeholder="Business name"
+                >
+
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="you@business.co.za"
+                >
+
+
+                <label>
+                    Phone
+                </label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    placeholder="082 123 4567"
+                >
+
+
+                <label>
+                    What would you like to improve?
+                </label>
+
+                <textarea
+                    name="message"
+                    placeholder="Tell us about the business, what is slowing you down, or where you want more growth..."
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="public-btn public-btn-primary public-submit"
+                >
+                    Send Enquiry
+                </button>
+
+            </form>
+
+            {% endif %}
+
         </div>
 
     </div>
 
-    {% endif %}
-
-
-    <form
-        method="POST"
-        action="{{ url_for('contact_page') }}"
-    >
-
-        <label>
-            Name
-        </label>
-
-        <input
-            type="text"
-            name="name"
-            placeholder="Your name"
-            required
-        >
-
-
-        <label>
-            Email
-        </label>
-
-        <input
-            type="email"
-            name="email"
-            placeholder="you@business.co.za"
-        >
-
-
-        <label>
-            Phone
-        </label>
-
-        <input
-            type="text"
-            name="phone"
-            placeholder="082 123 4567"
-        >
-
-
-        <label>
-            What do you need help with?
-        </label>
-
-        <textarea
-            name="message"
-            placeholder="Tell us about your business and what you'd like to improve..."
-        ></textarea>
-
-
-        <button
-            type="submit"
-            class="primary"
-        >
-            Send Enquiry
-        </button>
-
-    </form>
-
-</div>
+</section>
 
 {% endblock %}

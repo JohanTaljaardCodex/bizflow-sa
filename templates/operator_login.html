@@ -1,0 +1,64 @@
+{% extends "public_base.html" %}
+
+{% block title %}Operator Login | BizFlow SA{% endblock %}
+
+{% block content %}
+
+<section class="operator-login-section">
+
+    <div class="operator-login-card">
+
+        <div class="operator-login-icon">
+            AI
+        </div>
+
+        <span class="public-kicker">
+            PRIVATE CONTROL CENTRE
+        </span>
+
+        <h1>
+            BizFlow Operator
+        </h1>
+
+        <p>
+            Sign in to access the internal BizFlow
+            sales and automation control centre.
+        </p>
+
+
+        {% if error %}
+
+        <div class="public-form-error">
+            {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            <label>
+                Operator password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <button
+                type="submit"
+                class="public-btn public-btn-primary public-submit"
+            >
+                Open Control Centre
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}
