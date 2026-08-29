@@ -1,181 +1,37 @@
 {% extends "public_base.html" %}
 
-{% block title %}BizFlow Growth System | BizFlow SA{% endblock %}
+{% block title %}Growth System | BizFlow SA{% endblock %}
 
 {% block content %}
-
-<section class="public-page-hero">
-
-    <div class="public-container narrow">
-
-        <span class="public-kicker">
-            THE BIZFLOW GROWTH SYSTEM
-        </span>
-
-        <h1>
-            A practical AI-powered system
-            built around business growth.
-        </h1>
-
+<section class="subpage-hero">
+    <div class="public-shell narrow">
+        <div class="pill-label">THE BIZFLOW GROWTH SYSTEM</div>
+        <h1>One system built around <span>business growth.</span></h1>
         <p>
-            BizFlow brings lead management, follow-up,
-            marketing support, task automation and business
-            visibility together so small businesses can spend
-            less time chasing admin and more time growing.
+            Bring sales, follow-up, marketing, tasks and automation into one
+            practical system designed for small business.
         </p>
-
-        <a
-            href="{{ url_for('contact_page') }}"
-            class="public-btn public-btn-primary"
-        >
-            Get Started
-        </a>
-
+        <a href="{{ url_for('contact_page') }}" class="btn-purple">Build My Growth System →</a>
     </div>
-
 </section>
 
-
-<section class="public-section">
-
-    <div class="public-container">
-
-        <div class="system-grid">
-
-            <article class="system-card">
-                <span>SALES</span>
-                <h3>Lead & Opportunity Management</h3>
-                <p>
-                    Capture opportunities, organise them in a pipeline
-                    and keep the next action visible.
-                </p>
-            </article>
-
-            <article class="system-card">
-                <span>AI</span>
-                <h3>AI Follow-Up Support</h3>
-                <p>
-                    Prepare useful, personalised follow-ups and keep
-                    sales opportunities moving.
-                </p>
-            </article>
-
-            <article class="system-card">
-                <span>MARKETING</span>
-                <h3>AI Content Support</h3>
-                <p>
-                    Create marketing ideas and content around what
-                    your business actually sells.
-                </p>
-            </article>
-
-            <article class="system-card">
-                <span>OPERATIONS</span>
-                <h3>Tasks & Automation</h3>
-                <p>
-                    Turn repeatable work into clear tasks and
-                    automated workflows.
-                </p>
-            </article>
-
-            <article class="system-card">
-                <span>INSIGHT</span>
-                <h3>Business Control Centre</h3>
-                <p>
-                    See leads, customers, work and pipeline activity
-                    without jumping between disconnected tools.
-                </p>
-            </article>
-
-            <article class="system-card">
-                <span>GROWTH</span>
-                <h3>Expandable System</h3>
-                <p>
-                    Add prospecting, outreach, social integrations
-                    and deeper automation as the business grows.
-                </p>
-            </article>
-
+<section class="dark-section">
+    <div class="public-shell">
+        <div class="feature-grid six">
+            <article class="feature-card"><div class="feature-icon">◎</div><h3>Lead Management</h3><p>Capture and organise opportunities in a clear sales pipeline.</p></article>
+            <article class="feature-card"><div class="feature-icon">✦</div><h3>AI Follow-Up</h3><p>Prepare personalised follow-ups and keep opportunities moving.</p></article>
+            <article class="feature-card"><div class="feature-icon">▰</div><h3>Marketing</h3><p>Create useful content around your actual business and offers.</p></article>
+            <article class="feature-card"><div class="feature-icon">ϟ</div><h3>Automation</h3><p>Turn repeatable business work into automated workflows.</p></article>
+            <article class="feature-card"><div class="feature-icon">▥</div><h3>Control Centre</h3><p>See leads, tasks, customers, pipeline and activity in one place.</p></article>
+            <article class="feature-card"><div class="feature-icon">↗</div><h3>Growth Engine</h3><p>Add prospecting, outreach and social automation as you grow.</p></article>
         </div>
-
     </div>
-
 </section>
 
-
-<section class="public-section public-section-soft">
-
-    <div class="public-container">
-
-        <div class="section-intro centred">
-
-            <span class="public-kicker">
-                THE OUTCOME
-            </span>
-
-            <h2>
-                BizFlow is built to improve four things.
-            </h2>
-
-        </div>
-
-
-        <div class="outcome-grid">
-
-            <div>
-                <strong>More opportunities</strong>
-                <p>Better lead capture and prospect visibility.</p>
-            </div>
-
-            <div>
-                <strong>More conversions</strong>
-                <p>Faster, more consistent sales follow-up.</p>
-            </div>
-
-            <div>
-                <strong>More time</strong>
-                <p>Less repetitive admin and manual chasing.</p>
-            </div>
-
-            <div>
-                <strong>More clarity</strong>
-                <p>Know what the business needs attention on.</p>
-            </div>
-
-        </div>
-
+<section class="purple-cta">
+    <div class="public-shell purple-cta-inner">
+        <div><h2>Start with what matters most.</h2><p>We configure BizFlow around the biggest growth bottlenecks in your business.</p></div>
+        <a href="{{ url_for('contact_page') }}" class="btn-white">Talk to BizFlow →</a>
     </div>
-
 </section>
-
-
-<section class="public-cta-section">
-
-    <div class="public-container">
-
-        <div class="public-cta-panel">
-
-            <div>
-                <span class="public-kicker light">
-                    BUILD YOUR SYSTEM
-                </span>
-
-                <h2>
-                    Start with the parts your business needs most.
-                </h2>
-            </div>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-white"
-            >
-                Get Started
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
 {% endblock %}

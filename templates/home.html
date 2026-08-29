@@ -1,761 +1,149 @@
 {% extends "public_base.html" %}
 
-{% block title %}
-BizFlow SA | AI-Powered Small Business Growth System
-{% endblock %}
-
+{% block title %}BizFlow SA | Smarter Systems. Stronger Business.{% endblock %}
 
 {% block content %}
 
+<section class="landing-hero">
+    <div class="hero-glow glow-one"></div>
+    <div class="hero-glow glow-two"></div>
 
-<!-- =========================================================
-     HERO
-========================================================= -->
-
-<section class="public-hero">
-
-    <div class="public-container hero-grid">
-
-
-        <!-- HERO COPY -->
+    <div class="public-shell hero-layout">
 
         <div class="hero-copy">
-
-            <div class="public-kicker">
-                AI-POWERED BUSINESS GROWTH
-            </div>
-
+            <div class="pill-label">AI-POWERED GROWTH SYSTEM</div>
 
             <h1>
-                Build a business that
-                <span>works smarter.</span>
+                Smarter Systems.<br>
+                <span>Stronger Business.</span>
             </h1>
 
-
-            <p class="hero-lead">
-                BizFlow helps small businesses find more
-                opportunities, follow up with customers,
-                automate repetitive work and keep growth
-                moving — using AI.
+            <p class="hero-text">
+                BizFlow SA helps small businesses attract more opportunities,
+                close more deals and automate the work that slows them down.
             </p>
 
-
-            <div class="hero-actions">
-
-                <a
-                    href="{{ url_for('contact_page') }}"
-                    class="public-btn public-btn-primary"
-                >
-                    Start Growing →
+            <div class="hero-buttons">
+                <a href="{{ url_for('contact_page') }}" class="btn-purple">
+                    Start Growing Today →
                 </a>
-
-
-                <a
-                    href="{{ url_for('growth_system') }}"
-                    class="public-btn public-btn-secondary"
-                >
+                <a href="{{ url_for('growth_system') }}" class="btn-outline">
                     Explore BizFlow
                 </a>
-
             </div>
 
-
-            <div class="hero-proof">
-
-                <div>
-                    <strong>
-                        Find opportunities
-                    </strong>
-
-                    <span>
-                        Keep new business coming in
-                    </span>
-                </div>
-
-
-                <div>
-                    <strong>
-                        Convert faster
-                    </strong>
-
-                    <span>
-                        Stay on top of every lead
-                    </span>
-                </div>
-
-
-                <div>
-                    <strong>
-                        Automate work
-                    </strong>
-
-                    <span>
-                        Spend less time on admin
-                    </span>
-                </div>
-
+            <div class="hero-mini-proof">
+                <div><strong>Lead Capture</strong><span>Never miss an opportunity</span></div>
+                <div><strong>Smart Follow-Up</strong><span>Stay top-of-mind</span></div>
+                <div><strong>Automation</strong><span>Reduce repetitive work</span></div>
             </div>
-
         </div>
 
+        <div class="hero-visual">
+            <div class="orbital-ring ring-one"></div>
+            <div class="orbital-ring ring-two"></div>
 
-
-        <!-- PRODUCT PREVIEW -->
-
-        <div class="hero-product-card">
-
-            <div class="product-card-head">
-
-                <div>
-
-                    <span class="product-kicker">
-                        BIZFLOW CONTROL CENTRE
-                    </span>
-
-                    <h3>
-                        Your business.
-                        One growth system.
-                    </h3>
-
+            <div class="hero-logo-card">
+                <div class="hero-logo-mark">
+                    <span>B</span>
                 </div>
-
-
-                <span class="live-pill">
-                    ● AI Active
-                </span>
-
             </div>
 
-
-            <div class="product-stat-grid">
-
-                <div class="mini-stat">
-
-                    <span>
-                        SALES
-                    </span>
-
-                    <strong>
-                        Lead Pipeline
-                    </strong>
-
-                </div>
-
-
-                <div class="mini-stat">
-
-                    <span>
-                        AI
-                    </span>
-
-                    <strong>
-                        Follow-Ups
-                    </strong>
-
-                </div>
-
-
-                <div class="mini-stat">
-
-                    <span>
-                        MARKETING
-                    </span>
-
-                    <strong>
-                        Content
-                    </strong>
-
-                </div>
-
-
-                <div class="mini-stat">
-
-                    <span>
-                        AUTOMATION
-                    </span>
-
-                    <strong>
-                        Workflows
-                    </strong>
-
-                </div>
-
+            <div class="floating-card floating-one">
+                <span>NEW LEAD</span>
+                <strong>Website enquiry received</strong>
             </div>
 
-
-            <div class="product-flow">
-
-                <div class="flow-row">
-
-                    <span class="flow-icon">
-                        01
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            A new opportunity appears
-                        </strong>
-
-                        <p>
-                            Website enquiry, prospect or referral.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="flow-row">
-
-                    <span class="flow-icon">
-                        02
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            BizFlow organises the next move
-                        </strong>
-
-                        <p>
-                            Lead scoring, follow-up and tasks.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="flow-row">
-
-                    <span class="flow-icon">
-                        03
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            You focus on closing business
-                        </strong>
-
-                        <p>
-                            Less admin. More customer conversations.
-                        </p>
-
-                    </div>
-
-                </div>
-
+            <div class="floating-card floating-two">
+                <span>AI FOLLOW-UP</span>
+                <strong>Draft ready for approval</strong>
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-
-
-<!-- =========================================================
-     TRUST / POSITIONING
-========================================================= -->
-
-<section class="public-section">
-
-    <div class="public-container">
-
-        <div class="section-intro centred">
-
-            <span class="public-kicker">
-                SMALL BUSINESS SHOULD NOT FEEL CHAOTIC
-            </span>
-
-            <h2>
-                One system for the work
-                that actually grows the business.
-            </h2>
-
+<section class="dark-section">
+    <div class="public-shell">
+        <div class="section-title centre">
+            <span class="eyebrow-purple">BUILT FOR SMALL BUSINESS GROWTH</span>
+            <h2>Everything Your Business Needs in One Place</h2>
             <p>
-                Leads, follow-ups, customers, marketing,
-                tasks and automation should work together —
-                not live in six different places.
+                BizFlow brings your leads, customers, marketing, tasks and
+                automation together so you can focus on what matters most — growth.
             </p>
-
         </div>
 
-
-        <div class="public-feature-grid">
-
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    01
-                </span>
-
-                <h3>
-                    Find more opportunities
-                </h3>
-
-                <p>
-                    Capture website enquiries and build
-                    a pipeline of potential customers.
-                </p>
-
+        <div class="feature-grid">
+            <article class="feature-card">
+                <div class="feature-icon">◎</div>
+                <h3>Capture More Leads</h3>
+                <p>Never miss an opportunity with structured lead capture and tracking.</p>
             </article>
 
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    02
-                </span>
-
-                <h3>
-                    Never lose a good lead
-                </h3>
-
-                <p>
-                    Keep track of who needs attention,
-                    when to follow up and what happens next.
-                </p>
-
+            <article class="feature-card">
+                <div class="feature-icon">◫</div>
+                <h3>Follow Up Smarter</h3>
+                <p>AI-assisted follow-ups help you stay top-of-mind and close more deals.</p>
             </article>
 
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    03
-                </span>
-
-                <h3>
-                    Use AI where it matters
-                </h3>
-
-                <p>
-                    Generate follow-ups, marketing ideas
-                    and useful business actions faster.
-                </p>
-
+            <article class="feature-card">
+                <div class="feature-icon">ϟ</div>
+                <h3>Automate Work</h3>
+                <p>Automate repetitive tasks so you can focus on growing your business.</p>
             </article>
 
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    04
-                </span>
-
-                <h3>
-                    Automate repetitive work
-                </h3>
-
-                <p>
-                    Reduce the everyday admin that keeps
-                    owners away from customers and growth.
-                </p>
-
+            <article class="feature-card">
+                <div class="feature-icon">▥</div>
+                <h3>Track Everything</h3>
+                <p>See your pipeline, tasks, customers and performance in one dashboard.</p>
             </article>
-
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    05
-                </span>
-
-                <h3>
-                    See the whole business
-                </h3>
-
-                <p>
-                    Leads, customers, tasks and sales activity
-                    stay visible from one control centre.
-                </p>
-
-            </article>
-
-
-            <article class="public-feature">
-
-                <span class="feature-number">
-                    06
-                </span>
-
-                <h3>
-                    Grow the system with you
-                </h3>
-
-                <p>
-                    Start simple and add prospecting,
-                    social posting and deeper automation later.
-                </p>
-
-            </article>
-
         </div>
-
     </div>
-
 </section>
 
+<section class="how-section">
+    <div class="public-shell">
+        <div class="section-title centre light-title">
+            <h2>How BizFlow Works</h2>
+        </div>
 
+        <div class="how-grid">
+            <div class="how-step">
+                <div class="step-circle">1</div>
+                <h3>Capture</h3>
+                <p>New leads come in from your website, referrals or campaigns.</p>
+            </div>
 
-<!-- =========================================================
-     WHY BIZFLOW
-========================================================= -->
+            <div class="how-line"></div>
 
-<section class="public-section public-section-dark">
+            <div class="how-step">
+                <div class="step-circle">2</div>
+                <h3>Automate</h3>
+                <p>BizFlow AI qualifies leads, creates tasks and prepares follow-ups.</p>
+            </div>
 
-    <div class="public-container growth-split">
+            <div class="how-line"></div>
 
+            <div class="how-step">
+                <div class="step-circle">3</div>
+                <h3>Close & Grow</h3>
+                <p>You close more deals and grow with less manual work.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
+<section class="purple-cta">
+    <div class="public-shell purple-cta-inner">
         <div>
-
-            <span class="public-kicker light">
-                THE BIZFLOW APPROACH
-            </span>
-
-            <h2>
-                AI should help make
-                the business better.
-            </h2>
-
-            <p>
-                We are not adding AI just because it sounds impressive.
-                Every part of BizFlow should help you get customers,
-                save time, follow up faster or understand your business.
-            </p>
-
+            <h2>Ready to Transform Your Business?</h2>
+            <p>Build a smarter growth system for your business with BizFlow SA.</p>
         </div>
 
-
-        <div class="growth-checks">
-
-
-            <div>
-
-                <span>
-                    ✓
-                </span>
-
-                <p>
-                    Capture and organise sales opportunities
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    ✓
-                </span>
-
-                <p>
-                    Prepare smarter customer follow-ups
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    ✓
-                </span>
-
-                <p>
-                    Generate consistent marketing content
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    ✓
-                </span>
-
-                <p>
-                    Automate repeatable business work
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    ✓
-                </span>
-
-                <p>
-                    Keep the owner focused on growth
-                </p>
-
-            </div>
-
-
-        </div>
-
+        <a href="{{ url_for('contact_page') }}" class="btn-white">
+            Book a Free Consultation →
+        </a>
     </div>
-
 </section>
-
-
-
-<!-- =========================================================
-     HOW IT WORKS
-========================================================= -->
-
-<section class="public-section">
-
-    <div class="public-container">
-
-
-        <div class="section-intro centred">
-
-            <span class="public-kicker">
-                SIMPLE TO START
-            </span>
-
-            <h2>
-                Built around your business.
-            </h2>
-
-            <p>
-                You do not need to become an AI expert.
-                We help shape BizFlow around the way
-                your business actually operates.
-            </p>
-
-        </div>
-
-
-
-        <div class="steps-grid">
-
-
-            <article class="step-card">
-
-                <span>
-                    1
-                </span>
-
-                <h3>
-                    Understand
-                </h3>
-
-                <p>
-                    We look at your customers, sales process,
-                    marketing and everyday bottlenecks.
-                </p>
-
-            </article>
-
-
-            <article class="step-card">
-
-                <span>
-                    2
-                </span>
-
-                <h3>
-                    Build
-                </h3>
-
-                <p>
-                    We configure the growth system,
-                    workflows and AI support you actually need.
-                </p>
-
-            </article>
-
-
-            <article class="step-card">
-
-                <span>
-                    3
-                </span>
-
-                <h3>
-                    Grow
-                </h3>
-
-                <p>
-                    Use BizFlow to stay organised,
-                    move opportunities forward and automate more over time.
-                </p>
-
-            </article>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     PRODUCT LEVELS
-========================================================= -->
-
-<section class="public-section public-section-soft">
-
-    <div class="public-container">
-
-
-        <div class="section-intro">
-
-            <span class="public-kicker">
-                GROW WITH BIZFLOW
-            </span>
-
-            <h2>
-                Start simple.
-                Add more power when you need it.
-            </h2>
-
-        </div>
-
-
-        <div class="package-grid">
-
-
-            <article class="package-card">
-
-                <div class="package-label">
-                    START
-                </div>
-
-                <h2>
-                    AI Starter
-                </h2>
-
-                <p class="package-sub">
-                    Build the foundation for leads,
-                    follow-up and everyday business organisation.
-                </p>
-
-                <a
-                    href="{{ url_for('pricing') }}"
-                    class="public-btn public-btn-secondary full"
-                >
-                    Explore Starter
-                </a>
-
-            </article>
-
-
-
-            <article class="package-card featured">
-
-                <div class="package-label">
-                    GROW
-                </div>
-
-                <h2>
-                    AI Growth
-                </h2>
-
-                <p class="package-sub">
-                    Add stronger sales, marketing,
-                    prospecting and automation capabilities.
-                </p>
-
-                <a
-                    href="{{ url_for('pricing') }}"
-                    class="public-btn public-btn-primary full"
-                >
-                    Explore Growth
-                </a>
-
-            </article>
-
-
-
-            <article class="package-card">
-
-                <div class="package-label">
-                    OPERATE
-                </div>
-
-                <h2>
-                    AI Operator
-                </h2>
-
-                <p class="package-sub">
-                    Build toward an active AI-assisted layer
-                    helping operate parts of the business.
-                </p>
-
-                <a
-                    href="{{ url_for('pricing') }}"
-                    class="public-btn public-btn-secondary full"
-                >
-                    Explore Operator
-                </a>
-
-            </article>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     FINAL CTA
-========================================================= -->
-
-<section class="public-cta-section">
-
-    <div class="public-container">
-
-        <div class="public-cta-panel">
-
-
-            <div>
-
-                <span class="public-kicker light">
-                    YOUR BUSINESS CAN WORK SMARTER
-                </span>
-
-                <h2>
-                    Ready to build a better
-                    growth system?
-                </h2>
-
-                <p>
-                    Tell us where your business is losing
-                    time, leads or opportunities.
-                </p>
-
-            </div>
-
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-white"
-            >
-                Talk to BizFlow →
-            </a>
-
-
-        </div>
-
-    </div>
-
-</section>
-
 
 {% endblock %}

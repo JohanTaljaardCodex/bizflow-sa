@@ -1,18 +1,141 @@
-{% extends "base.html" %}{% block title %}Business Control Centre{% endblock %}{% block content %}
-<section class="stats">
-<div class="card dashboard-stat"><div class="stat-label">Open Tasks</div><div class="stat-number">{{ task_count }}</div><a href="{{ url_for('tasks_page') }}" class="stat-link">View tasks →</a></div>
-<div class="card dashboard-stat"><div class="stat-label">Hot Leads</div><div class="stat-number">{{ hot_lead_count }}</div><a href="{{ url_for('leads_page') }}" class="stat-link">View pipeline →</a></div>
-<div class="card dashboard-stat"><div class="stat-label">Customers</div><div class="stat-number">{{ customer_count }}</div><a href="{{ url_for('customers_page') }}" class="stat-link">View customers →</a></div>
-<div class="card dashboard-stat"><div class="stat-label">Active Pipeline</div><div class="stat-number">R {{ "%.0f"|format(pipeline_value or 0) }}</div><a href="{{ url_for('leads_page') }}" class="stat-link">View opportunities →</a></div>
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+{% block page_subheading %}Here’s what’s happening with your business today.{% endblock %}
+
+{% block content %}
+
+<section class="operator-stats">
+    <div class="metric-card">
+        <span>Open Tasks</span>
+        <strong>{{ task_count }}</strong>
+        <small>Current workload</small>
+    </div>
+
+    <div class="metric-card">
+        <span>Hot Leads</span>
+        <strong>{{ hot_lead_count }}</strong>
+        <small>High-priority opportunities</small>
+    </div>
+
+    <div class="metric-card">
+        <span>Customers</span>
+        <strong>{{ customer_count }}</strong>
+        <small>Converted business</small>
+    </div>
+
+    <div class="metric-card">
+        <span>Pipeline</span>
+        <strong>R{{ "%.0f"|format(pipeline_value or 0) }}</strong>
+        <small>Active opportunity value</small>
+    </div>
 </section>
-{% if nav_overdue_count>0 or nav_approval_count>0 %}<div class="attention-bar"><strong>BizFlow needs your attention</strong><span>{{ nav_overdue_count }} overdue · {{ nav_approval_count }} approvals</span><a href="{{ url_for('approvals_page') }}">Review</a></div>{% endif %}
-<div class="dashboard-grid"><div>
-<div class="card"><div class="section-heading"><div><div class="section-eyebrow">AI OPERATOR</div><h2>Today's Priorities</h2></div><form method="POST" action="{{ url_for('daily_priorities') }}"><button class="primary">✦ Generate Priorities</button></form></div>{% if priorities %}<div class="response">{{ priorities }}</div>{% else %}<div class="empty-state"><strong>Your operator is ready.</strong><p>Generate today's priorities to see what needs attention first.</p></div>{% endif %}</div>
-<div class="card"><div class="section-heading"><div><div class="section-eyebrow">SALES</div><h2>Hot Leads</h2></div><a href="{{ url_for('leads_page') }}" class="section-link">View Pipeline →</a></div>{% if hot_leads %}{% for lead in hot_leads %}<a class="hot-lead-row" href="{{ url_for('lead_detail', lead_id=lead[0]) }}"><strong>{{ lead[1] }}</strong><span>{{ lead[9] }}</span><span>R {{ "%.0f"|format(lead[10] or 0) }}</span><span>{{ lead[14] }}/100 →</span></a>{% endfor %}{% else %}<div class="empty-state">No hot leads yet.</div>{% endif %}</div>
-<div class="card" id="overdue-followups"><div class="section-heading"><div><div class="section-eyebrow danger">FOLLOW-UPS</div><h2>Overdue Follow-Ups</h2></div></div>{% if overdue_leads %}{% for lead in overdue_leads %}<a class="overdue-row" href="{{ url_for('lead_detail', lead_id=lead[0]) }}"><strong>{{ lead[1] }}</strong><span>Due {{ lead[11] }}</span><span>→</span></a>{% endfor %}{% else %}<div class="success-state">✓ You're caught up.</div>{% endif %}</div>
-</div><div>
-<div class="card"><div class="section-eyebrow">REVENUE</div><h2>Revenue Snapshot</h2><div class="revenue-block"><span>Active Pipeline</span><strong>R {{ "%.2f"|format(pipeline_value or 0) }}</strong></div><div class="revenue-block won"><span>Won Revenue</span><strong>R {{ "%.2f"|format(won_value or 0) }}</strong></div></div>
-<div class="card"><div class="section-heading"><div><div class="section-eyebrow">SYSTEM</div><h2>Operator Status</h2></div><span class="operator-health operator-{{ operator.status_class }}">{{ operator.status }}</span></div><div class="operator-checks"><div><span>Last heartbeat</span><strong>{{ operator.last_seen_text }}</strong></div><div><span>Last cycle</span><strong>{{ operator.last_cycle_completed or 'Not completed yet' }}</strong></div></div>{% if operator.last_error %}<div class="operator-error-box">{{ operator.last_error }}</div>{% endif %}</div>
-<div class="card"><div class="section-heading"><h2>Recent Activity</h2><a href="{{ url_for('activity_page') }}" class="section-link">View All →</a></div>{% for item in activity %}<div class="activity-item"><div class="activity-title">{{ item[0] }}</div><div class="activity-text">{{ item[1] }}</div><div class="activity-time">{{ item[2] }}</div></div>{% else %}<div class="empty-state">No activity yet.</div>{% endfor %}</div>
-</div></div>
+
+<section class="operator-grid-main">
+    <div class="operator-panel">
+        <div class="panel-head">
+            <div>
+                <span class="panel-kicker">PIPELINE OVERVIEW</span>
+                <h2>Sales Funnel</h2>
+            </div>
+            <a href="{{ url_for('leads_page') }}">View Pipeline →</a>
+        </div>
+
+        <div class="funnel">
+            <div class="funnel-row wide"><span>New</span><strong>{{ hot_lead_count + 1 }}</strong></div>
+            <div class="funnel-row medium"><span>Active</span><strong>{{ hot_lead_count }}</strong></div>
+            <div class="funnel-row small"><span>Won</span><strong>{{ customer_count }}</strong></div>
+        </div>
+    </div>
+
+    <div class="operator-panel">
+        <div class="panel-head">
+            <div>
+                <span class="panel-kicker">RECENT ACTIVITY</span>
+                <h2>Live Feed</h2>
+            </div>
+            <a href="{{ url_for('activity_page') }}">View All →</a>
+        </div>
+
+        <div class="activity-feed">
+            {% if activity %}
+                {% for item in activity %}
+                <div class="activity-feed-row">
+                    <div>
+                        <strong>{{ item[0] }}</strong>
+                        <span>{{ item[1] }}</span>
+                    </div>
+                    {% if item[2] %}<small>{{ item[2] }}</small>{% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="operator-empty">No activity yet.</div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="operator-grid-secondary">
+    <div class="operator-panel">
+        <div class="panel-head">
+            <div>
+                <span class="panel-kicker">TODAY</span>
+                <h2>AI Priorities</h2>
+            </div>
+            <form method="POST" action="{{ url_for('daily_priorities') }}">
+                <button class="btn-purple tiny" type="submit">Generate</button>
+            </form>
+        </div>
+
+        {% if priorities %}
+            <div class="ai-response">{{ priorities }}</div>
+        {% else %}
+            <div class="operator-empty">
+                Generate today’s priorities and let the operator tell you what needs attention first.
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="operator-panel">
+        <div class="panel-head">
+            <div>
+                <span class="panel-kicker">HOT OPPORTUNITIES</span>
+                <h2>Leads to Watch</h2>
+            </div>
+        </div>
+
+        {% if hot_leads %}
+            {% for lead in hot_leads %}
+            <a href="{{ url_for('lead_detail', lead_id=lead[0]) }}" class="hot-opportunity">
+                <div>
+                    <strong>{{ lead[1] }}</strong>
+                    <span>{{ lead[9] }} · Score {{ lead[14] or 0 }}</span>
+                </div>
+                <b>R{{ "%.0f"|format(lead[10] or 0) }}</b>
+            </a>
+            {% endfor %}
+        {% else %}
+            <div class="operator-empty">No hot leads yet.</div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="operator-panel quick-actions-panel">
+    <div class="panel-head">
+        <div>
+            <span class="panel-kicker">QUICK ACTIONS</span>
+            <h2>Move Faster</h2>
+        </div>
+    </div>
+
+    <div class="quick-action-grid">
+        <a href="{{ url_for('contact_page') }}"><span>◎＋</span><strong>Add Lead</strong></a>
+        <a href="{{ url_for('tasks_page') }}"><span>☑</span><strong>Tasks</strong></a>
+        <a href="{{ url_for('content_page') }}"><span>▰</span><strong>Content</strong></a>
+        <a href="{{ url_for('approvals_page') }}"><span>✓</span><strong>Approvals</strong></a>
+        <a href="{{ url_for('activity_page') }}"><span>▥</span><strong>Activity</strong></a>
+    </div>
+</section>
+
 {% endblock %}

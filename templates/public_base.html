@@ -1,177 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
-    <meta
-        name="description"
-        content="BizFlow SA helps South African small businesses generate opportunities, follow up faster, automate repetitive work and grow with AI."
-    >
-
-    <title>
-        {% block title %}BizFlow SA{% endblock %}
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BizFlow SA — AI-powered small business growth system.">
+    <title>{% block title %}BizFlow SA{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
-
 <body class="public-body">
 
-
-<!-- =========================================================
-     NAVIGATION
-========================================================= -->
-
 <header class="public-header">
-
     <div class="public-nav">
-
-        <a
-            href="{{ url_for('home') }}"
-            class="public-brand"
-        >
-
-            <div class="brand-logo">
-                B
+        <a href="{{ url_for('home') }}" class="brand brand-public">
+            <div class="bf-logo">
+                <span class="bf-logo-b">B</span>
             </div>
-
-            <div class="brand-text public-brand-text">
-                <strong>BizFlow</strong>
-                <span>SA</span>
-            </div>
-
+            <div class="brand-name">BIZFLOW <span>SA</span></div>
         </a>
 
-
         <nav class="public-links">
-
-            <a href="{{ url_for('growth_system') }}">
-                Growth System
-            </a>
-
-            <a href="{{ url_for('how_it_works') }}">
-                How It Works
-            </a>
-
-            <a href="{{ url_for('pricing') }}">
-                Packages
-            </a>
-
-            <a href="{{ url_for('contact_page') }}">
-                Contact
-            </a>
-
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('growth_system') }}">Growth System</a>
+            <a href="{{ url_for('pricing') }}">Packages</a>
+            <a href="{{ url_for('how_it_works') }}">How It Works</a>
+            <a href="{{ url_for('contact_page') }}">Contact</a>
         </nav>
 
-
         <div class="public-nav-actions">
-
-            <a
-                href="{{ url_for('operator_login') }}"
-                class="public-login"
-            >
-                Operator Login
-            </a>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-cta-small"
-            >
-                Get Started →
-            </a>
-
+            <a href="{{ url_for('operator_login') }}" class="public-login">Operator</a>
+            <a href="{{ url_for('contact_page') }}" class="btn-purple small">Get Started</a>
         </div>
-
     </div>
-
 </header>
 
-
-<!-- =========================================================
-     PAGE
-========================================================= -->
-
 <main>
-
-    {% block content %}
-    {% endblock %}
-
+    {% block content %}{% endblock %}
 </main>
 
-
-<!-- =========================================================
-     FOOTER
-========================================================= -->
-
-<footer class="public-footer">
-
-    <div class="public-footer-inner">
-
+<footer class="site-footer">
+    <div class="site-footer-inner">
         <div>
-
-            <div class="public-footer-brand">
-                BizFlow SA
+            <div class="brand brand-footer">
+                <div class="bf-logo small-logo"><span class="bf-logo-b">B</span></div>
+                <div class="brand-name">BIZFLOW <span>SA</span></div>
             </div>
-
-            <p>
-                AI-powered systems designed to help
-                South African small businesses work smarter,
-                win more customers and grow.
-            </p>
-
+            <p>Smarter systems. Stronger businesses.</p>
         </div>
 
-
-        <div class="public-footer-links">
-
-            <a href="{{ url_for('growth_system') }}">
-                Growth System
-            </a>
-
-            <a href="{{ url_for('how_it_works') }}">
-                How It Works
-            </a>
-
-            <a href="{{ url_for('pricing') }}">
-                Packages
-            </a>
-
-            <a href="{{ url_for('contact_page') }}">
-                Get Started
-            </a>
-
+        <div class="footer-links">
+            <a href="{{ url_for('growth_system') }}">Growth System</a>
+            <a href="{{ url_for('pricing') }}">Packages</a>
+            <a href="{{ url_for('how_it_works') }}">How It Works</a>
+            <a href="{{ url_for('contact_page') }}">Contact</a>
         </div>
-
     </div>
-
-
-    <div class="public-footer-bottom">
-
-        <span>
-            © 2026 BizFlow SA
-        </span>
-
-        <span>
-            Built for South African small businesses.
-        </span>
-
-    </div>
-
+    <div class="footer-bottom">© 2026 BizFlow SA · South Africa</div>
 </footer>
 
-
 </body>
-
 </html>

@@ -1,187 +1,53 @@
 {% extends "public_base.html" %}
 
-{% block title %}BizFlow Packages | BizFlow SA{% endblock %}
+{% block title %}Packages | BizFlow SA{% endblock %}
 
 {% block content %}
-
-<section class="public-page-hero">
-
-    <div class="public-container narrow">
-
-        <span class="public-kicker">
-            BIZFLOW PACKAGES
-        </span>
-
-        <h1>
-            Start with what your business needs.
-            Grow the system from there.
-        </h1>
-
-        <p>
-            We are keeping the offer practical:
-            a core growth system first, then additional
-            automation as it becomes useful.
-        </p>
-
+<section class="subpage-hero">
+    <div class="public-shell narrow">
+        <div class="pill-label">BIZFLOW PACKAGES</div>
+        <h1>Start smart. <span>Scale when it works.</span></h1>
+        <p>Choose the level that matches where your business is today.</p>
     </div>
-
 </section>
 
+<section class="dark-section">
+    <div class="public-shell">
+        <div class="pricing-grid">
+            <article class="pricing-card">
+                <div class="price-kicker">STARTER</div>
+                <h2>AI Starter</h2>
+                <p class="price-copy">Build the foundation for leads, follow-up and business organisation.</p>
+                <ul>
+                    <li>Lead capture</li><li>CRM & pipeline</li><li>AI follow-up support</li>
+                    <li>Tasks</li><li>Content support</li><li>Control centre</li>
+                </ul>
+                <a href="{{ url_for('contact_page') }}" class="btn-outline full">Enquire</a>
+            </article>
 
-<section class="public-section">
+            <article class="pricing-card featured">
+                <div class="popular-tag">MOST POPULAR</div>
+                <div class="price-kicker">GROWTH</div>
+                <h2>AI Growth</h2>
+                <p class="price-copy">Add stronger sales, marketing, prospecting and automation.</p>
+                <ul>
+                    <li>Everything in Starter</li><li>Prospecting workflows</li><li>Outreach preparation</li>
+                    <li>Marketing automation</li><li>Social workflows</li><li>Advanced automation</li>
+                </ul>
+                <a href="{{ url_for('contact_page') }}" class="btn-purple full">Talk About Growth</a>
+            </article>
 
-    <div class="public-container package-grid">
-
-        <article class="package-card">
-
-            <div class="package-label">
-                STARTER
-            </div>
-
-            <h2>
-                BizFlow AI Starter
-            </h2>
-
-            <p class="package-sub">
-                Get the business AI-ready with a clear
-                lead, follow-up and workflow system.
-            </p>
-
-            <ul>
-                <li>Lead capture</li>
-                <li>Simple CRM & sales pipeline</li>
-                <li>AI follow-up support</li>
-                <li>Tasks & workflow structure</li>
-                <li>AI content support</li>
-                <li>Business control centre</li>
-            </ul>
-
-            <div class="package-note">
-                Setup tailored to the business.
-            </div>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-secondary full"
-            >
-                Enquire About Starter
-            </a>
-
-        </article>
-
-
-        <article class="package-card featured">
-
-            <div class="package-label">
-                GROWTH
-            </div>
-
-            <h2>
-                BizFlow AI Growth
-            </h2>
-
-            <p class="package-sub">
-                Add stronger customer-acquisition and
-                automation capabilities as the business grows.
-            </p>
-
-            <ul>
-                <li>Everything in AI Starter</li>
-                <li>Prospecting workflows</li>
-                <li>Outreach preparation</li>
-                <li>Marketing automation</li>
-                <li>Social content workflows</li>
-                <li>More advanced business automation</li>
-            </ul>
-
-            <div class="package-note">
-                Built around measurable growth use cases.
-            </div>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-primary full"
-            >
-                Talk About Growth
-            </a>
-
-        </article>
-
-
-        <article class="package-card">
-
-            <div class="package-label">
-                OPERATOR
-            </div>
-
-            <h2>
-                BizFlow AI Operator
-            </h2>
-
-            <p class="package-sub">
-                For businesses ready for a more active AI-assisted
-                operating layer across sales, marketing and admin.
-            </p>
-
-            <ul>
-                <li>Everything in AI Growth</li>
-                <li>Scheduled operator cycles</li>
-                <li>Advanced automation</li>
-                <li>Business alerts & prioritisation</li>
-                <li>Connected workflows</li>
-                <li>Ongoing optimisation</li>
-            </ul>
-
-            <div class="package-note">
-                Best suited to businesses with repeatable processes.
-            </div>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-secondary full"
-            >
-                Discuss AI Operator
-            </a>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<section class="public-section public-section-soft">
-
-    <div class="public-container">
-
-        <div class="section-intro centred">
-
-            <span class="public-kicker">
-                PRICING
-            </span>
-
-            <h2>
-                We price around the setup,
-                complexity and automation required.
-            </h2>
-
-            <p>
-                We would rather understand what your business
-                actually needs than force every company into the
-                same generic software package.
-            </p>
-
-            <a
-                href="{{ url_for('contact_page') }}"
-                class="public-btn public-btn-primary"
-            >
-                Get a BizFlow Recommendation
-            </a>
-
+            <article class="pricing-card">
+                <div class="price-kicker">OPERATOR</div>
+                <h2>AI Operator</h2>
+                <p class="price-copy">Build toward an active AI-assisted operating layer for the business.</p>
+                <ul>
+                    <li>Everything in Growth</li><li>Scheduled AI cycles</li><li>Prioritisation</li>
+                    <li>Advanced workflows</li><li>Connected operations</li><li>Ongoing optimisation</li>
+                </ul>
+                <a href="{{ url_for('contact_page') }}" class="btn-outline full">Discuss Operator</a>
+            </article>
         </div>
-
     </div>
-
 </section>
-
 {% endblock %}
