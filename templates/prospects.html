@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Real Prospects{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="section-heading">
+    <div>
+      <div class="section-eyebrow">CUSTOMER ACQUISITION</div>
+      <h2>Real Business Prospects</h2>
+      <div class="meta">Businesses discovered from public Google Places data. BizFlow scores them and prepares outreach for your approval.</div>
+    </div>
+  </div>
+  <div class="response" style="margin-top:0;">Prospecting is intentionally low-volume. It runs once per day from the cloud operator and avoids duplicate businesses.</div>
+</div>
+
+<div class="card">
+{% if prospects %}
+<table>
+  <thead><tr><th>Business</th><th>Market</th><th>Score</th><th>Status</th><th>Contact</th><th>Action</th></tr></thead>
+  <tbody>
+  {% for p in prospects %}
+    <tr>
+      <td>
+        <strong>{{ p[1] }}</strong>
+        <div class="meta">{{ p[4] or '' }}</div>
+        {% if p[10] %}<div class="meta"><strong>Why:</strong> {{ p[10] }}</div>{% endif %}
+        {% if p[11] %}<div class="draft-box"><strong>AI Outreach Draft</strong><br><br>{{ p[11] }}</div>{% endif %}
+      </td>
+      <td>{{ p[2] or 'Unknown' }}<div class="meta">{{ p[3] or '' }}</div></td>
+      <td><span class="badge {% if p[9] >= 80 %}badge-red{% elif p[9] >= 60 %}badge-orange{% endif %}">{{ p[9] }}/100</span></td>
+      <td>{{ p[8] }}<div class="meta">Outreach: {{ p[12] }}</div></td>
+      <td>
+        {% if p[5] %}<a href="{{ p[5] }}" target="_blank" rel="noopener">Website</a><br>{% endif %}
+        {% if p[6] %}<span class="meta">{{ p[6] }}</span><br>{% endif %}
+        {% if p[7] %}<a href="{{ p[7] }}" target="_blank" rel="noopener">Google Maps</a>{% endif %}
+      </td>
+      <td>
+        <div class="actions">
+        {% if p[12] == 'Pending Approval' %}
+          <form method="POST" action="{{ url_for('approve_prospect_outreach', prospect_id=p[0]) }}"><button class="green">Approve</button></form>
+        {% endif %}
+        {% if not p[13] %}
+          <form method="POST" action="{{ url_for('convert_prospect_to_lead', prospect_id=p[0]) }}"><button class="primary">Convert to Lead</button></form>
+        {% endif %}
+        {% if p[8] != 'Rejected' %}
+          <form method="POST" action="{{ url_for('reject_prospect', prospect_id=p[0]) }}"><button class="red">Reject</button></form>
+        {% endif %}
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state"><strong>No prospects yet</strong><p>Once Google Places is enabled, the next scheduled operator cycle will start finding real businesses.</p></div>
+{% endif %}
+</div>
+{% endblock %}

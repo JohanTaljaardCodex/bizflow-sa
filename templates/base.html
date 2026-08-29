@@ -11,6 +11,7 @@
 <div class="sidebar-label">WORKSPACE</div><nav class="sidebar-nav">
 <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.endpoint in ['dashboard','daily_priorities'] %}active{% endif %}">⌂ <span>Dashboard</span></a>
 <a href="{{ url_for('leads_page') }}" class="nav-item {% if request.endpoint in ['leads_page','lead_detail'] %}active{% endif %}">◎ <span>Leads</span></a>
+<a href="{{ url_for('prospects_page') }}" class="nav-item {% if request.endpoint=='prospects_page' %}active{% endif %}">⌕ <span>Prospects</span>{% if nav_prospect_count>0 %}<span class="nav-badge nav-badge-orange">{{ nav_prospect_count }}</span>{% endif %}</a>
 <a href="{{ url_for('customers_page') }}" class="nav-item {% if request.endpoint=='customers_page' %}active{% endif %}">◉ <span>Customers</span></a>
 <a href="{{ url_for('tasks_page') }}" class="nav-item {% if request.endpoint=='tasks_page' %}active{% endif %}">✓ <span>Tasks</span>{% if nav_task_count>0 %}<span class="nav-badge">{{ nav_task_count }}</span>{% endif %}</a>
 <a href="{{ url_for('dashboard') }}#overdue-followups" class="nav-item">! <span>Overdue</span>{% if nav_overdue_count>0 %}<span class="nav-badge nav-badge-orange">{{ nav_overdue_count }}</span>{% endif %}</a>

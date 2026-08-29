@@ -3,13 +3,11 @@ name: BizFlow Operator
 on:
   schedule:
     - cron: "0 * * * *"
-
   workflow_dispatch:
 
 jobs:
   run-operator:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout BizFlow
         uses: actions/checkout@v4
@@ -28,6 +26,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
           RUN_ONCE: "true"
+          PROSPECTING_ENABLED: "true"
+          PROSPECT_QUERIES_PER_RUN: "2"
+          PROSPECT_RESULTS_PER_QUERY: "5"
         run: |
           python automation_engine.py

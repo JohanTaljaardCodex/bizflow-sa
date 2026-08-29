@@ -4,14 +4,9 @@ from datetime import datetime
 
 from database import get_connection, create_database
 from bizflow_operator import ask_operator
+from prospecting import run_daily_prospecting
 
-
-RUN_ONCE = (
-    os.getenv("RUN_ONCE", "false")
-    .strip()
-    .lower()
-    in ("1", "true", "yes", "on")
-)
+RUN_ONCE = os.getenv("RUN_ONCE", "false").strip().lower() in ("1", "true", "yes", "on")
 
 
 # =========================================================
@@ -37,182 +32,52 @@ def log_activity(action, details):
     conn.close()
 
 
+
 # =========================================================
 # OPERATOR HEARTBEAT
 # =========================================================
 
 def ensure_operator_status_table():
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS operator_status (
-            id INTEGER PRIMARY KEY,
-            status TEXT,
-            last_heartbeat TEXT,
-            last_cycle_started TEXT,
-            last_cycle_completed TEXT,
-            last_error TEXT
-        )
-    """)
-
-    conn.commit()
-    conn.close()
+    conn=get_connection(); cursor=conn.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS operator_status (
+        id INTEGER PRIMARY KEY,status TEXT,last_heartbeat TEXT,last_cycle_started TEXT,
+        last_cycle_completed TEXT,last_error TEXT)""")
+    conn.commit(); conn.close()
 
 
 def ensure_operator_status_row():
     ensure_operator_status_table()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM operator_status
-        WHERE id = 1
-    """)
-
-    exists = cursor.fetchone()[0]
-
-    if exists == 0:
-        now = datetime.now().isoformat(
-            timespec="seconds"
-        )
-
-        cursor.execute("""
-            INSERT INTO operator_status (
-                id,
-                status,
-                last_heartbeat,
-                last_cycle_started,
-                last_cycle_completed,
-                last_error
-            )
-            VALUES (
-                1,
-                'Offline',
-                ?,
-                NULL,
-                NULL,
-                NULL
-            )
-        """, (
-            now,
-        ))
-
+    conn=get_connection(); cursor=conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM operator_status WHERE id=1")
+    if cursor.fetchone()[0] == 0:
+        now=datetime.now().isoformat(timespec="seconds")
+        cursor.execute("INSERT INTO operator_status (id,status,last_heartbeat) VALUES (1,'Offline',?)", (now,))
         conn.commit()
-
     conn.close()
 
 
-def update_operator_heartbeat(
-    status="Online",
-    error_message=None
-):
-    ensure_operator_status_row()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    now = datetime.now().isoformat(
-        timespec="seconds"
-    )
-
-    cursor.execute("""
-        UPDATE operator_status
-        SET
-            status = ?,
-            last_heartbeat = ?,
-            last_error = ?
-        WHERE id = 1
-    """, (
-        status,
-        now,
-        error_message
-    ))
-
-    conn.commit()
-    conn.close()
+def update_operator_heartbeat(status="Online", error_message=None):
+    ensure_operator_status_row(); conn=get_connection(); cursor=conn.cursor(); now=datetime.now().isoformat(timespec="seconds")
+    cursor.execute("UPDATE operator_status SET status=?,last_heartbeat=?,last_error=? WHERE id=1", (status,now,error_message))
+    conn.commit(); conn.close()
 
 
 def mark_cycle_started():
-    ensure_operator_status_row()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    now = datetime.now().isoformat(
-        timespec="seconds"
-    )
-
-    cursor.execute("""
-        UPDATE operator_status
-        SET
-            status = 'Running',
-            last_heartbeat = ?,
-            last_cycle_started = ?,
-            last_error = NULL
-        WHERE id = 1
-    """, (
-        now,
-        now
-    ))
-
-    conn.commit()
-    conn.close()
+    ensure_operator_status_row(); conn=get_connection(); cursor=conn.cursor(); now=datetime.now().isoformat(timespec="seconds")
+    cursor.execute("UPDATE operator_status SET status='Running',last_heartbeat=?,last_cycle_started=?,last_error=NULL WHERE id=1", (now,now))
+    conn.commit(); conn.close()
 
 
 def mark_cycle_completed():
-    ensure_operator_status_row()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    now = datetime.now().isoformat(
-        timespec="seconds"
-    )
-
-    cursor.execute("""
-        UPDATE operator_status
-        SET
-            status = 'Online',
-            last_heartbeat = ?,
-            last_cycle_completed = ?,
-            last_error = NULL
-        WHERE id = 1
-    """, (
-        now,
-        now
-    ))
-
-    conn.commit()
-    conn.close()
+    ensure_operator_status_row(); conn=get_connection(); cursor=conn.cursor(); now=datetime.now().isoformat(timespec="seconds")
+    cursor.execute("UPDATE operator_status SET status='Online',last_heartbeat=?,last_cycle_completed=?,last_error=NULL WHERE id=1", (now,now))
+    conn.commit(); conn.close()
 
 
 def mark_operator_error(error):
-    ensure_operator_status_row()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    now = datetime.now().isoformat(
-        timespec="seconds"
-    )
-
-    cursor.execute("""
-        UPDATE operator_status
-        SET
-            status = 'Error',
-            last_heartbeat = ?,
-            last_error = ?
-        WHERE id = 1
-    """, (
-        now,
-        str(error)
-    ))
-
-    conn.commit()
-    conn.close()
+    ensure_operator_status_row(); conn=get_connection(); cursor=conn.cursor(); now=datetime.now().isoformat(timespec="seconds")
+    cursor.execute("UPDATE operator_status SET status='Error',last_heartbeat=?,last_error=? WHERE id=1", (now,str(error)))
+    conn.commit(); conn.close()
 
 
 # =========================================================
@@ -299,6 +164,7 @@ def score_leads():
     """)
 
     leads = cursor.fetchall()
+
     conn.close()
 
     now = datetime.now()
@@ -406,6 +272,10 @@ def process_new_leads():
     """)
 
     leads = cursor.fetchall()
+
+    # IMPORTANT:
+    # close read connection before creating tasks
+    # or updating leads
     conn.close()
 
     if not leads:
@@ -443,6 +313,7 @@ Contact this lead and establish whether BizFlow SA can help their business.
             "High"
         )
 
+        # Separate short transaction for lead update
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -459,6 +330,7 @@ Contact this lead and establish whether BizFlow SA can help their business.
         conn.commit()
         conn.close()
 
+        # Log only AFTER the other write transaction closes
         if created:
 
             log_activity(
@@ -499,6 +371,7 @@ def draft_followups():
     """)
 
     leads = cursor.fetchall()
+
     conn.close()
 
     for lead in leads:
@@ -573,13 +446,10 @@ Return only the finished message.
                 error
             )
 
-            try:
-                log_activity(
-                    "Automation Error",
-                    f"Follow-up for {name}: {error}"
-                )
-            except Exception:
-                pass
+            log_activity(
+                "Automation Error",
+                f"Follow-up for {name}: {error}"
+            )
 
 
 # =========================================================
@@ -607,6 +477,7 @@ def check_overdue_followups():
     """)
 
     leads = cursor.fetchall()
+
     conn.close()
 
     now = datetime.now()
@@ -618,6 +489,7 @@ def check_overdue_followups():
         score = lead[4] or 0
 
         try:
+
             followup = datetime.fromisoformat(
                 next_followup
             )
@@ -685,14 +557,13 @@ def ensure_daily_content():
     ))
 
     exists = cursor.fetchone()[0]
+
     conn.close()
 
     if exists > 0:
-
         print(
             "Today's Instagram content already exists."
         )
-
         return
 
     prompt = """
@@ -700,14 +571,6 @@ Create today's Instagram post for BizFlow SA.
 
 Audience:
 South African small business owners.
-
-BizFlow SA is building an AI-powered Small Business Growth System.
-
-The content should help small business owners understand how they can:
-- Find more opportunities
-- Follow up with customers faster
-- Save time through automation
-- Improve sales and business growth
 
 Requirements:
 - Useful
@@ -717,7 +580,6 @@ Requirements:
 - Concise
 - Clear call to action
 - No unrealistic claims
-- Do not make fake income promises
 
 Return only the finished post.
 """
@@ -771,13 +633,10 @@ Return only the finished post.
             error
         )
 
-        try:
-            log_activity(
-                "Automation Error",
-                f"Daily content: {error}"
-            )
-        except Exception:
-            pass
+        log_activity(
+            "Automation Error",
+            f"Daily content: {error}"
+        )
 
 
 # =========================================================
@@ -800,6 +659,7 @@ def process_scheduled_content():
     """)
 
     items = cursor.fetchall()
+
     conn.close()
 
     now = datetime.now()
@@ -873,6 +733,7 @@ def update_overdue_tasks():
     """)
 
     tasks = cursor.fetchall()
+
     conn.close()
 
     now = datetime.now()
@@ -924,7 +785,6 @@ def create_business_snapshot():
             'Lost'
         )
     """)
-
     leads = cursor.fetchone()[0]
 
     cursor.execute("""
@@ -936,7 +796,6 @@ def create_business_snapshot():
             'Lost'
         )
     """)
-
     hot = cursor.fetchone()[0]
 
     cursor.execute("""
@@ -944,7 +803,6 @@ def create_business_snapshot():
         FROM tasks
         WHERE status != 'Completed'
     """)
-
     tasks = cursor.fetchone()[0]
 
     cursor.execute("""
@@ -953,7 +811,6 @@ def create_business_snapshot():
         WHERE status != 'Completed'
         AND priority = 'Urgent'
     """)
-
     urgent = cursor.fetchone()[0]
 
     cursor.execute("""
@@ -967,7 +824,6 @@ def create_business_snapshot():
             'Lost'
         )
     """)
-
     pipeline = cursor.fetchone()[0]
 
     cursor.execute("""
@@ -975,7 +831,6 @@ def create_business_snapshot():
         FROM content_queue
         WHERE status = 'Pending Approval'
     """)
-
     approvals = cursor.fetchone()[0]
 
     conn.close()
@@ -1003,9 +858,7 @@ def create_business_snapshot():
 # =========================================================
 
 def run_operator_cycle():
-
     mark_cycle_started()
-
     print()
     print(
         "================================"
@@ -1039,6 +892,8 @@ def run_operator_cycle():
 
     process_scheduled_content()
 
+    run_daily_prospecting()
+
     create_business_snapshot()
 
     log_activity(
@@ -1063,122 +918,48 @@ def run_operator_cycle():
 # =========================================================
 
 if __name__ == "__main__":
-
     create_database()
-
     ensure_operator_status_row()
 
     print()
-    print(
-        "BizFlow Automation Engine"
-    )
+    print("BizFlow Automation Engine")
 
     if RUN_ONCE:
-
-        print(
-            "Mode: Scheduled cloud cycle"
-        )
-
-        print(
-            "Running one cycle and exiting."
-        )
-
+        print("Mode: Scheduled cloud cycle")
+        print("Running one cycle and exiting.")
         print()
-
         try:
-
             run_operator_cycle()
-
-            print(
-                "Scheduled operator run complete."
-            )
-
+            print("Scheduled operator run complete.")
         except Exception as error:
-
-            print()
-            print(
-                "Operator error:",
-                error
-            )
-
+            print("Operator error:", error)
             try:
-
-                mark_operator_error(
-                    error
-                )
-
-                log_activity(
-                    "Automation Error",
-                    str(error)
-                )
-
+                mark_operator_error(error)
+                log_activity("Automation Error", str(error))
             except Exception:
                 pass
-
             raise
-
     else:
-
-        update_operator_heartbeat(
-            "Online"
-        )
-
-        print(
-            "Mode: Continuous local operator"
-        )
-
-        print(
-            "Checking business every hour."
-        )
-
-        print(
-            "Press CTRL+C to stop."
-        )
-
+        update_operator_heartbeat("Online")
+        print("Mode: Continuous local operator")
+        print("Checking business every hour.")
+        print("Press CTRL+C to stop.")
         print()
-
         while True:
-
             try:
-
                 run_operator_cycle()
-
             except KeyboardInterrupt:
-
                 try:
-                    update_operator_heartbeat(
-                        "Stopped"
-                    )
+                    update_operator_heartbeat("Stopped")
                 except Exception:
                     pass
-
-                print()
-                print(
-                    "BizFlow automation stopped."
-                )
-
+                print("BizFlow automation stopped.")
                 break
-
             except Exception as error:
-
-                print()
-                print(
-                    "Operator error:",
-                    error
-                )
-
+                print("Operator error:", error)
                 try:
-
-                    mark_operator_error(
-                        error
-                    )
-
-                    log_activity(
-                        "Automation Error",
-                        str(error)
-                    )
-
+                    mark_operator_error(error)
+                    log_activity("Automation Error", str(error))
                 except Exception:
                     pass
-
             time.sleep(3600)
