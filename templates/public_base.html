@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1"
@@ -9,7 +12,7 @@
 
     <meta
         name="description"
-        content="BizFlow SA is an AI-powered Small Business Growth System helping South African businesses find opportunities, follow up faster, automate busy work and grow."
+        content="BizFlow SA helps South African small businesses generate opportunities, follow up faster, automate repetitive work and grow with AI."
     >
 
     <title>
@@ -20,9 +23,16 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
+
 </head>
 
+
 <body class="public-body">
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
 
 <header class="public-header">
 
@@ -32,6 +42,7 @@
             href="{{ url_for('home') }}"
             class="public-brand"
         >
+
             <div class="brand-logo">
                 B
             </div>
@@ -40,6 +51,7 @@
                 <strong>BizFlow</strong>
                 <span>SA</span>
             </div>
+
         </a>
 
 
@@ -77,7 +89,7 @@
                 href="{{ url_for('contact_page') }}"
                 class="public-cta-small"
             >
-                Get Started
+                Get Started →
             </a>
 
         </div>
@@ -87,25 +99,38 @@
 </header>
 
 
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
 <main>
+
     {% block content %}
     {% endblock %}
+
 </main>
 
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
 <footer class="public-footer">
 
     <div class="public-footer-inner">
 
         <div>
+
             <div class="public-footer-brand">
                 BizFlow SA
             </div>
 
             <p>
-                AI-powered systems built to help small
-                businesses grow smarter.
+                AI-powered systems designed to help
+                South African small businesses work smarter,
+                win more customers and grow.
             </p>
+
         </div>
 
 
@@ -133,10 +158,20 @@
 
 
     <div class="public-footer-bottom">
-        © 2026 BizFlow SA. South Africa.
+
+        <span>
+            © 2026 BizFlow SA
+        </span>
+
+        <span>
+            Built for South African small businesses.
+        </span>
+
     </div>
 
 </footer>
 
+
 </body>
+
 </html>
