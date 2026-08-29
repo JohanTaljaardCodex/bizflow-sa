@@ -13,6 +13,11 @@ from flask import (
 
 from database import get_connection, create_database
 from bizflow_operator import ask_operator
+from instagram_publisher import (
+    publish_instagram_content,
+    instagram_publishing_configured,
+    InstagramPublishingError,
+)
 
 
 app = Flask(__name__)
@@ -479,7 +484,19 @@ def get_customers():
 def get_content():
     return fetchall("""
         SELECT
-            id,title,content,status,platform,scheduled_for,created_at
+            id,
+            title,
+            content,
+            status,
+            platform,
+            scheduled_for,
+            created_at,
+            media_url,
+            approved_at,
+            published_at,
+            external_post_id,
+            publish_attempts,
+            last_publish_error
         FROM content_queue
         ORDER BY id DESC
     """)
@@ -1111,7 +1128,8 @@ def complete_task(task_id):
 def content_page():
     return render_template(
         "content.html",
-        content=get_content()
+        content=get_content(),
+        instagram_configured=instagram_publishing_configured()
     )
 
 
@@ -1125,13 +1143,13 @@ def generate_post():
 
     topic = request.form.get(
         "topic",
-        "BizFlow SA"
+        "BizFlow SA Small Business Growth System"
     )
 
     try:
         post = ask_operator(
             f"""
-Create one strong {platform} marketing post for BizFlow SA.
+Create one strong {platform} marketing caption for BizFlow SA.
 
 BizFlow SA is an AI-powered Small Business Growth System
 for South African small businesses.
@@ -1139,18 +1157,22 @@ for South African small businesses.
 Topic:
 {topic}
 
-Focus on helping businesses:
+The post should help small business owners understand how they can:
 - find more opportunities
-- follow up faster
-- save time
-- automate repetitive work
-- grow sales and revenue
+- follow up with customers faster
+- save time with automation
+- improve sales and business growth
 
-Use a strong hook.
-Keep it professional, friendly and useful.
-Use a clear call to action.
-Do not make unrealistic income claims.
-Return only the post.
+Requirements:
+- strong first-line hook
+- professional but natural South African business tone
+- useful, not generic hype
+- concise enough for social media
+- clear call to action to visit BizFlow SA or enquire
+- include 3 to 6 relevant hashtags at the end
+- no fake income claims or guaranteed results
+
+Return only the finished caption.
 """
         )
 
@@ -1168,7 +1190,10 @@ Return only the post.
 
     conn.execute("""
         INSERT INTO content_queue (
-            title,content,status,platform
+            title,
+            content,
+            status,
+            platform
         )
         VALUES (?,?,?,?)
     """, (
@@ -1191,16 +1216,52 @@ Return only the post.
     )
 
 
+@app.route("/operator/content/<int:content_id>/media", methods=["POST"])
+@operator_required
+def update_content_media(content_id):
+    media_url = (request.form.get("media_url") or "").strip()
+
+    conn = get_connection()
+    conn.execute("""
+        UPDATE content_queue
+        SET media_url=?
+        WHERE id=?
+    """, (
+        media_url or None,
+        content_id
+    ))
+    conn.commit()
+    conn.close()
+
+    log_activity(
+        "Content Media Updated",
+        f"Media URL updated for content #{content_id}."
+    )
+
+    return redirect(
+        request.referrer
+        or url_for("content_page")
+    )
+
+
 @app.route("/operator/content/<int:content_id>/approve", methods=["POST"])
 @operator_required
 def approve_content(content_id):
+    approved_at = datetime.now().isoformat(timespec="seconds")
+
     conn = get_connection()
 
     conn.execute("""
         UPDATE content_queue
-        SET status='Approved'
+        SET
+            status='Approved',
+            approved_at=?,
+            last_publish_error=NULL
         WHERE id=?
-    """, (content_id,))
+    """, (
+        approved_at,
+        content_id
+    ))
 
     conn.commit()
     conn.close()
@@ -1259,7 +1320,8 @@ def schedule_content(content_id):
         UPDATE content_queue
         SET
             status='Scheduled',
-            scheduled_for=?
+            scheduled_for=?,
+            last_publish_error=NULL
         WHERE id=?
     """, (
         scheduled,
@@ -1273,6 +1335,98 @@ def schedule_content(content_id):
         "Content Scheduled",
         f"Content #{content_id} scheduled for {scheduled}."
     )
+
+    return redirect(
+        url_for("content_page")
+    )
+
+
+@app.route("/operator/content/<int:content_id>/publish", methods=["POST"])
+@operator_required
+def publish_content_now(content_id):
+    row = fetchone("""
+        SELECT
+            id,
+            content,
+            status,
+            platform,
+            media_url
+        FROM content_queue
+        WHERE id=?
+    """, (content_id,))
+
+    if not row:
+        return redirect(url_for("content_page"))
+
+    _, caption, status, platform, media_url = row
+
+    if platform != "Instagram":
+        log_activity(
+            "Publish Skipped",
+            f"Content #{content_id} is not an Instagram post."
+        )
+        return redirect(url_for("content_page"))
+
+    if status not in ("Approved", "Ready to Publish", "Failed"):
+        log_activity(
+            "Publish Skipped",
+            f"Content #{content_id} must be approved before publishing."
+        )
+        return redirect(url_for("content_page"))
+
+    try:
+        external_post_id = publish_instagram_content(
+            caption=caption,
+            media_url=media_url
+        )
+
+        published_at = datetime.now().isoformat(
+            timespec="seconds"
+        )
+
+        conn = get_connection()
+        conn.execute("""
+            UPDATE content_queue
+            SET
+                status='Published',
+                published_at=?,
+                external_post_id=?,
+                publish_attempts=COALESCE(publish_attempts,0)+1,
+                last_publish_error=NULL
+            WHERE id=?
+        """, (
+            published_at,
+            external_post_id,
+            content_id
+        ))
+        conn.commit()
+        conn.close()
+
+        log_activity(
+            "Instagram Published",
+            f"Content #{content_id} published to Instagram."
+        )
+
+    except InstagramPublishingError as error:
+        conn = get_connection()
+        conn.execute("""
+            UPDATE content_queue
+            SET
+                status='Failed',
+                publish_attempts=COALESCE(publish_attempts,0)+1,
+                last_publish_error=?
+            WHERE id=?
+        """, (
+            str(error),
+            content_id
+        ))
+        conn.commit()
+        conn.close()
+
+        log_activity(
+            "Instagram Publish Failed",
+            f"Content #{content_id}: {error}"
+        )
 
     return redirect(
         url_for("content_page")

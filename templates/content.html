@@ -1,1 +1,183 @@
-{% extends "base.html" %}{% block title %}Content{% endblock %}{% block content %}<div class="grid"><div><div class="card"><h2>Content Queue</h2>{% for i in content %}<div class="content-item"><strong>{{ i[1] }}</strong><div class="meta">Platform: {{ i[4] }}</div><div class="content-text">{{ i[2] }}</div><div class="meta">Status: <strong>{{ i[3] }}</strong></div>{% if i[5] %}<div class="meta">Scheduled: {{ i[5] }}</div>{% endif %}<div class="actions">{% if i[3]=='Pending Approval' %}<form method="POST" action="/content/{{ i[0] }}/approve"><button class="green">Approve</button></form><form method="POST" action="/content/{{ i[0] }}/reject"><button class="red">Reject</button></form>{% endif %}{% if i[3]=='Approved' %}<form method="POST" action="/content/{{ i[0] }}/schedule"><input type="datetime-local" name="scheduled_for" required><button class="dark">Schedule</button></form>{% endif %}</div></div>{% else %}<p>No content created yet.</p>{% endfor %}</div></div><div><div class="card"><h2>Create Content</h2><form method="POST" action="/generate-post"><label>Platform</label><select name="platform"><option>Instagram</option><option>Facebook</option></select><label>Topic</label><input name="topic" placeholder="BizFlow Starter Kit"><button class="primary">Generate Post</button></form></div></div></div>{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Content{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+
+    <div>
+
+        <div class="card">
+
+            <div class="section-heading">
+                <div>
+                    <div class="section-eyebrow">MARKETING</div>
+                    <h2>Content Queue</h2>
+                    <div class="meta">
+                        Generate, approve, schedule and publish BizFlow SA content.
+                    </div>
+                </div>
+
+                {% if instagram_configured %}
+                <span class="badge badge-green">Instagram Connected</span>
+                {% else %}
+                <span class="badge badge-orange">Meta Verification Pending</span>
+                {% endif %}
+            </div>
+
+            {% for i in content %}
+
+            <div class="content-item">
+
+                <div class="content-head-row">
+                    <div>
+                        <strong>{{ i[1] }}</strong>
+                        <div class="meta">{{ i[4] }} · {{ i[3] }}</div>
+                    </div>
+
+                    {% if i[3] == 'Published' %}
+                    <span class="badge badge-green">Published</span>
+                    {% elif i[3] == 'Failed' %}
+                    <span class="badge badge-red">Failed</span>
+                    {% elif i[3] == 'Ready to Publish' %}
+                    <span class="badge badge-orange">Ready</span>
+                    {% endif %}
+                </div>
+
+                <div class="content-text">{{ i[2] }}</div>
+
+                <form
+                    method="POST"
+                    action="{{ url_for('update_content_media', content_id=i[0]) }}"
+                    class="media-url-form"
+                >
+                    <label>Instagram image URL</label>
+                    <div class="inline-form-row">
+                        <input
+                            type="url"
+                            name="media_url"
+                            value="{{ i[7] or '' }}"
+                            placeholder="https://.../bizflow-post.jpg"
+                        >
+                        <button class="dark">Save Image</button>
+                    </div>
+                    <div class="meta">
+                        Must be a publicly accessible image URL before Instagram can publish it.
+                    </div>
+                </form>
+
+                {% if i[5] %}
+                <div class="meta">Scheduled: {{ i[5] }}</div>
+                {% endif %}
+
+                {% if i[9] %}
+                <div class="meta">Published: {{ i[9] }}</div>
+                {% endif %}
+
+                {% if i[10] %}
+                <div class="meta">Instagram Post ID: {{ i[10] }}</div>
+                {% endif %}
+
+                {% if i[12] %}
+                <div class="publish-error">{{ i[12] }}</div>
+                {% endif %}
+
+                <div class="actions">
+
+                    {% if i[3] == 'Pending Approval' %}
+                    <form method="POST" action="{{ url_for('approve_content', content_id=i[0]) }}">
+                        <button class="green">Approve</button>
+                    </form>
+
+                    <form method="POST" action="{{ url_for('reject_content', content_id=i[0]) }}">
+                        <button class="red">Reject</button>
+                    </form>
+                    {% endif %}
+
+                    {% if i[3] == 'Approved' %}
+                    <form method="POST" action="{{ url_for('schedule_content', content_id=i[0]) }}" class="schedule-form">
+                        <input type="datetime-local" name="scheduled_for" required>
+                        <button class="dark">Schedule</button>
+                    </form>
+
+                    {% if i[4] == 'Instagram' %}
+                    <form method="POST" action="{{ url_for('publish_content_now', content_id=i[0]) }}">
+                        <button class="primary">Publish Now</button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if i[3] in ['Ready to Publish', 'Failed'] and i[4] == 'Instagram' %}
+                    <form method="POST" action="{{ url_for('publish_content_now', content_id=i[0]) }}">
+                        <button class="primary">
+                            {% if i[3] == 'Failed' %}Retry Publish{% else %}Publish Now{% endif %}
+                        </button>
+                    </form>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% else %}
+            <div class="empty-state">
+                <strong>No content created yet.</strong>
+                <p>Generate your first BizFlow SA post.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <div>
+
+        <div class="card">
+            <div class="section-eyebrow">AI CONTENT</div>
+            <h2>Create Content</h2>
+
+            <form method="POST" action="{{ url_for('generate_post') }}">
+
+                <label>Platform</label>
+                <select name="platform">
+                    <option>Instagram</option>
+                    <option>Facebook</option>
+                </select>
+
+                <label>Topic</label>
+                <input
+                    name="topic"
+                    placeholder="How automation helps small businesses follow up faster"
+                >
+
+                <button class="primary">Generate Post</button>
+
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="section-eyebrow">PUBLISHING FLOW</div>
+            <h2>Instagram Automation</h2>
+
+            <div class="automation-flow-list">
+                <div><span>1</span><p>AI creates the caption.</p></div>
+                <div><span>2</span><p>You approve the post.</p></div>
+                <div><span>3</span><p>Add the image URL and schedule it.</p></div>
+                <div><span>4</span><p>Operator publishes automatically when due.</p></div>
+                <div><span>5</span><p>Success or failure is written to Activity.</p></div>
+            </div>
+
+            {% if not instagram_configured %}
+            <div class="connection-note">
+                Meta credentials are not connected yet. Your approved content will stay safely queued until verification is complete.
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -236,6 +236,12 @@ def create_database():
 
     add_column_if_missing(cursor, "content_queue", "platform", "TEXT DEFAULT 'Instagram'")
     add_column_if_missing(cursor, "content_queue", "scheduled_for", "TEXT")
+    add_column_if_missing(cursor, "content_queue", "media_url", "TEXT")
+    add_column_if_missing(cursor, "content_queue", "approved_at", "TEXT")
+    add_column_if_missing(cursor, "content_queue", "published_at", "TEXT")
+    add_column_if_missing(cursor, "content_queue", "external_post_id", "TEXT")
+    add_column_if_missing(cursor, "content_queue", "publish_attempts", "INTEGER DEFAULT 0")
+    add_column_if_missing(cursor, "content_queue", "last_publish_error", "TEXT")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS operator_status (
         id INTEGER PRIMARY KEY,

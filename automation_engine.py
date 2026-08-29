@@ -5,6 +5,11 @@ from datetime import datetime
 from database import get_connection, create_database
 from bizflow_operator import ask_operator
 from prospecting import run_daily_prospecting
+from instagram_publisher import (
+    publish_instagram_content,
+    instagram_publishing_configured,
+    InstagramPublishingError,
+)
 
 RUN_ONCE = os.getenv("RUN_ONCE", "false").strip().lower() in ("1", "true", "yes", "on")
 
@@ -567,21 +572,29 @@ def ensure_daily_content():
         return
 
     prompt = """
-Create today's Instagram post for BizFlow SA.
+Create today's Instagram caption for BizFlow SA.
+
+BizFlow SA is an AI-powered Small Business Growth System.
 
 Audience:
 South African small business owners.
 
-Requirements:
-- Useful
-- Strong hook
-- Professional
-- Friendly
-- Concise
-- Clear call to action
-- No unrealistic claims
+The post should help business owners with one useful idea around:
+- getting more opportunities
+- following up faster
+- saving time through automation
+- improving sales or customer growth
 
-Return only the finished post.
+Requirements:
+- Strong first-line hook
+- Professional but natural
+- Useful rather than generic hype
+- Concise
+- Clear call to action to visit or contact BizFlow SA
+- Add 3 to 6 relevant hashtags
+- No unrealistic income or growth guarantees
+
+Return only the finished caption.
 """
 
     try:
@@ -712,6 +725,114 @@ def process_scheduled_content():
             f"Content #{content_id} "
             "is ready to publish."
         )
+
+
+# =========================================================
+# INSTAGRAM PUBLISHING
+# =========================================================
+
+def process_ready_instagram_posts():
+    """
+    Publishes scheduled Instagram posts once they reach Ready to Publish.
+
+    Until Meta verification is complete, this safely does nothing because
+    META_ACCESS_TOKEN / META_IG_USER_ID are not configured yet.
+    """
+    if not instagram_publishing_configured():
+        print("Instagram publisher not connected yet - queued posts kept safe.")
+        return
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            content,
+            media_url
+        FROM content_queue
+        WHERE platform='Instagram'
+        AND status='Ready to Publish'
+        ORDER BY id
+    """)
+
+    items = cursor.fetchall()
+    conn.close()
+
+    for content_id, caption, media_url in items:
+        if not media_url:
+            print(
+                f"Instagram content #{content_id} is ready but has no media URL."
+            )
+            continue
+
+        try:
+            external_post_id = publish_instagram_content(
+                caption=caption,
+                media_url=media_url
+            )
+
+            published_at = datetime.now().isoformat(
+                timespec="seconds"
+            )
+
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE content_queue
+                SET
+                    status='Published',
+                    published_at=?,
+                    external_post_id=?,
+                    publish_attempts=COALESCE(publish_attempts,0)+1,
+                    last_publish_error=NULL
+                WHERE id=?
+            """, (
+                published_at,
+                external_post_id,
+                content_id
+            ))
+
+            conn.commit()
+            conn.close()
+
+            log_activity(
+                "Instagram Published",
+                f"Content #{content_id} published automatically to Instagram."
+            )
+
+            print(
+                f"Instagram content #{content_id} published successfully."
+            )
+
+        except InstagramPublishingError as error:
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE content_queue
+                SET
+                    status='Failed',
+                    publish_attempts=COALESCE(publish_attempts,0)+1,
+                    last_publish_error=?
+                WHERE id=?
+            """, (
+                str(error),
+                content_id
+            ))
+
+            conn.commit()
+            conn.close()
+
+            log_activity(
+                "Instagram Publish Failed",
+                f"Content #{content_id}: {error}"
+            )
+
+            print(
+                f"Instagram publish failed for #{content_id}: {error}"
+            )
 
 
 # =========================================================
@@ -891,6 +1012,8 @@ def run_operator_cycle():
     ensure_daily_content()
 
     process_scheduled_content()
+
+    process_ready_instagram_posts()
 
     run_daily_prospecting()
 
