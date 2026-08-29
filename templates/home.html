@@ -1,35 +1,20 @@
 {% extends "public_base.html" %}
-
 {% block title %}BizFlow SA | Smarter Systems. Stronger Business.{% endblock %}
 
 {% block content %}
-
 <section class="landing-hero">
-    <div class="hero-glow glow-one"></div>
-    <div class="hero-glow glow-two"></div>
-
     <div class="public-shell hero-layout">
-
         <div class="hero-copy">
             <div class="pill-label">AI-POWERED GROWTH SYSTEM</div>
-
-            <h1>
-                Smarter Systems.<br>
-                <span>Stronger Business.</span>
-            </h1>
-
+            <h1>Smarter Systems.<br><span>Stronger Business.</span></h1>
             <p class="hero-text">
                 BizFlow SA helps small businesses attract more opportunities,
                 close more deals and automate the work that slows them down.
             </p>
 
             <div class="hero-buttons">
-                <a href="{{ url_for('contact_page') }}" class="btn-purple">
-                    Start Growing Today →
-                </a>
-                <a href="{{ url_for('growth_system') }}" class="btn-outline">
-                    Explore BizFlow
-                </a>
+                <a href="{{ url_for('contact_page') }}" class="btn-purple">Start Growing Today →</a>
+                <a href="{{ url_for('growth_system') }}" class="btn-outline">Explore BizFlow</a>
             </div>
 
             <div class="hero-mini-proof">
@@ -42,18 +27,12 @@
         <div class="hero-visual">
             <div class="orbital-ring ring-one"></div>
             <div class="orbital-ring ring-two"></div>
-
-            <div class="hero-logo-card">
-                <div class="hero-logo-mark">
-                    <span>B</span>
-                </div>
-            </div>
+            <div class="hero-logo-card"><div class="hero-logo-mark">B</div></div>
 
             <div class="floating-card floating-one">
                 <span>NEW LEAD</span>
                 <strong>Website enquiry received</strong>
             </div>
-
             <div class="floating-card floating-two">
                 <span>AI FOLLOW-UP</span>
                 <strong>Draft ready for approval</strong>
@@ -68,82 +47,37 @@
             <span class="eyebrow-purple">BUILT FOR SMALL BUSINESS GROWTH</span>
             <h2>Everything Your Business Needs in One Place</h2>
             <p>
-                BizFlow brings your leads, customers, marketing, tasks and
-                automation together so you can focus on what matters most — growth.
+                BizFlow brings your leads, customers, marketing, tasks and automation together
+                so you can focus on what matters most — growth.
             </p>
         </div>
 
         <div class="feature-grid">
-            <article class="feature-card">
-                <div class="feature-icon">◎</div>
-                <h3>Capture More Leads</h3>
-                <p>Never miss an opportunity with structured lead capture and tracking.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-icon">◫</div>
-                <h3>Follow Up Smarter</h3>
-                <p>AI-assisted follow-ups help you stay top-of-mind and close more deals.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-icon">ϟ</div>
-                <h3>Automate Work</h3>
-                <p>Automate repetitive tasks so you can focus on growing your business.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-icon">▥</div>
-                <h3>Track Everything</h3>
-                <p>See your pipeline, tasks, customers and performance in one dashboard.</p>
-            </article>
+            <article class="feature-card"><div class="feature-icon">◎</div><h3>Capture More Leads</h3><p>Never miss an opportunity with structured lead capture and tracking.</p></article>
+            <article class="feature-card"><div class="feature-icon">◫</div><h3>Follow Up Smarter</h3><p>AI-assisted follow-ups help you stay top-of-mind and close more deals.</p></article>
+            <article class="feature-card"><div class="feature-icon">ϟ</div><h3>Automate Work</h3><p>Automate repetitive tasks so you can focus on growing your business.</p></article>
+            <article class="feature-card"><div class="feature-icon">▥</div><h3>Track Everything</h3><p>See pipeline, tasks, customers and activity in one dashboard.</p></article>
         </div>
     </div>
 </section>
 
 <section class="how-section">
     <div class="public-shell">
-        <div class="section-title centre light-title">
-            <h2>How BizFlow Works</h2>
-        </div>
-
+        <div class="section-title centre light-title"><h2>How BizFlow Works</h2></div>
         <div class="how-grid">
-            <div class="how-step">
-                <div class="step-circle">1</div>
-                <h3>Capture</h3>
-                <p>New leads come in from your website, referrals or campaigns.</p>
-            </div>
-
+            <div class="how-step"><div class="step-circle">1</div><h3>Capture</h3><p>New leads come in from your website, referrals or campaigns.</p></div>
             <div class="how-line"></div>
-
-            <div class="how-step">
-                <div class="step-circle">2</div>
-                <h3>Automate</h3>
-                <p>BizFlow AI qualifies leads, creates tasks and prepares follow-ups.</p>
-            </div>
-
+            <div class="how-step"><div class="step-circle">2</div><h3>Automate</h3><p>BizFlow AI qualifies leads, creates tasks and prepares follow-ups.</p></div>
             <div class="how-line"></div>
-
-            <div class="how-step">
-                <div class="step-circle">3</div>
-                <h3>Close & Grow</h3>
-                <p>You close more deals and grow with less manual work.</p>
-            </div>
+            <div class="how-step"><div class="step-circle">3</div><h3>Close & Grow</h3><p>You close more deals and grow with less manual work.</p></div>
         </div>
     </div>
 </section>
 
 <section class="purple-cta">
     <div class="public-shell purple-cta-inner">
-        <div>
-            <h2>Ready to Transform Your Business?</h2>
-            <p>Build a smarter growth system for your business with BizFlow SA.</p>
-        </div>
-
-        <a href="{{ url_for('contact_page') }}" class="btn-white">
-            Book a Free Consultation →
-        </a>
+        <div><h2>Ready to Transform Your Business?</h2><p>Build a smarter growth system with BizFlow SA.</p></div>
+        <a href="{{ url_for('contact_page') }}" class="btn-white">Book a Free Consultation →</a>
     </div>
 </section>
-
 {% endblock %}

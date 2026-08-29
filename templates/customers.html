@@ -1,1 +1,23 @@
-{% extends "base.html" %}{% block title %}Customers{% endblock %}{% block content %}<div class="card"><h2>Customers</h2>{% if customers %}<table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Created</th></tr>{% for c in customers %}<tr><td><strong>{{ c[1] }}</strong></td><td>{{ c[2] or 'Not supplied' }}</td><td>{{ c[3] or 'Not supplied' }}</td><td>{{ c[4] }}</td></tr>{% endfor %}</table>{% else %}<p>No customers yet.</p>{% endif %}</div>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block page_heading %}Customers{% endblock %}
+{% block page_subheading %}Converted business and active customer relationships.{% endblock %}
+
+{% block content %}
+<section class="operator-panel table-panel">
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Created</th></tr></thead>
+            <tbody>
+            {% if customers %}
+                {% for c in customers %}
+                <tr><td><strong>{{ c[1] }}</strong></td><td>{{ c[2] or "—" }}</td><td>{{ c[3] or "—" }}</td><td>{{ c[4] or "—" }}</td></tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan="4"><div class="operator-empty">No customers yet.</div></td></tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

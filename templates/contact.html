@@ -1,18 +1,12 @@
 {% extends "public_base.html" %}
-
 {% block title %}Get Started | BizFlow SA{% endblock %}
-
 {% block content %}
 <section class="contact-modern">
     <div class="public-shell contact-modern-grid">
         <div>
             <div class="pill-label">GET STARTED</div>
             <h1>Let’s build a smarter <span>growth system.</span></h1>
-            <p>
-                Tell us where your business needs help. Your enquiry goes directly
-                into BizFlow so it can be tracked and followed up properly.
-            </p>
-
+            <p>Tell us where your business needs help. Your enquiry goes directly into BizFlow so it can be tracked and followed up properly.</p>
             <div class="contact-benefits">
                 <div>✓ More consistent follow-up</div>
                 <div>✓ Better lead visibility</div>
@@ -31,7 +25,6 @@
             {% else %}
                 <h2>Tell us about your business</h2>
                 {% if error %}<div class="form-error">{{ error }}</div>{% endif %}
-
                 <form method="POST" action="{{ url_for('contact_page') }}">
                     <label>Your name</label>
                     <input type="text" name="name" placeholder="Your name" required>

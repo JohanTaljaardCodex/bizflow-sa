@@ -1,51 +1,48 @@
 {% extends "base.html" %}
-
 {% block title %}Approvals{% endblock %}
+{% block page_heading %}Approvals{% endblock %}
+{% block page_subheading %}Review AI-generated work before it moves forward.{% endblock %}
 
 {% block content %}
-
-<div class="card">
-    <div class="section-eyebrow">MARKETING</div>
-    <h2>Content Waiting Approval</h2>
-
-    {% for i in approvals %}
-    <div class="content-item">
-        <strong>{{ i[1] }}</strong>
-        <div class="meta">{{ i[4] }}</div>
-        <div class="content-text">{{ i[2] }}</div>
-
-        <div class="actions">
-            <form method="POST" action="{{ url_for('approve_content', content_id=i[0]) }}">
-                <button class="green">Approve</button>
-            </form>
-
-            <form method="POST" action="{{ url_for('reject_content', content_id=i[0]) }}">
-                <button class="red">Reject</button>
-            </form>
+<section class="operator-panel">
+    <div class="panel-head"><div><span class="panel-kicker">CONTENT</span><h2>Content Approvals</h2></div></div>
+    {% if approvals %}
+        {% for item in approvals %}
+        <div class="approval-row">
+            <div>
+                <strong>{{ item[1] }}</strong>
+                <span>{{ item[4] or "Content" }}</span>
+                <p>{{ item[2] }}</p>
+            </div>
+            <div class="inline-actions">
+                <form method="POST" action="{{ url_for('approve_content', content_id=item[0]) }}"><button class="btn-success" type="submit">Approve</button></form>
+                <form method="POST" action="{{ url_for('reject_content', content_id=item[0]) }}"><button class="btn-danger" type="submit">Reject</button></form>
+            </div>
         </div>
-    </div>
+        {% endfor %}
     {% else %}
-    <p>Nothing is waiting for approval.</p>
-    {% endfor %}
-</div>
+        <div class="operator-empty">No content waiting for approval.</div>
+    {% endif %}
+</section>
 
-
-<div class="card">
-    <div class="section-eyebrow">SALES</div>
-    <h2>Lead Messages Waiting Approval</h2>
-
-    {% for l in lead_approvals %}
-    <div class="lead-card">
-        <strong>{{ l[1] }}</strong>
-        <div class="draft-box">{{ l[7] }}</div>
-
-        <form method="POST" action="{{ url_for('approve_followup', lead_id=l[0]) }}">
-            <button class="green">Approve Message</button>
-        </form>
-    </div>
+<section class="operator-panel">
+    <div class="panel-head"><div><span class="panel-kicker">FOLLOW-UPS</span><h2>Lead Follow-Up Approvals</h2></div></div>
+    {% if lead_approvals %}
+        {% for lead in lead_approvals %}
+        <div class="approval-row">
+            <div>
+                <strong>{{ lead[1] }}</strong>
+                <span>{{ lead[9] }}</span>
+                <p>{{ lead[7] }}</p>
+            </div>
+            <div class="inline-actions">
+                <form method="POST" action="{{ url_for('approve_followup', lead_id=lead[0]) }}"><button class="btn-success" type="submit">Approve</button></form>
+                <form method="POST" action="{{ url_for('regenerate_followup', lead_id=lead[0]) }}"><button class="btn-dark" type="submit">Regenerate</button></form>
+            </div>
+        </div>
+        {% endfor %}
     {% else %}
-    <p>No lead messages are waiting for approval.</p>
-    {% endfor %}
-</div>
-
+        <div class="operator-empty">No follow-ups waiting for approval.</div>
+    {% endif %}
+</section>
 {% endblock %}

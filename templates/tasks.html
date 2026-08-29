@@ -1,1 +1,34 @@
-{% extends "base.html" %}{% block title %}Tasks{% endblock %}{% block content %}<div class="card"><h2>Operator Tasks</h2>{% if tasks %}<table><tr><th>Task</th><th>Description</th><th>Status</th><th>Priority</th><th>Due</th><th>Action</th></tr>{% for t in tasks %}<tr><td><strong>{{ t[1] }}</strong></td><td>{{ t[2] }}</td><td>{{ t[3] }}</td><td>{{ t[5] or 'Normal' }}</td><td>{{ t[6] or '-' }}</td><td>{% if t[3]!='Completed' %}<form method="POST" action="/task/{{ t[0] }}/complete"><button class="green">Complete</button></form>{% endif %}</td></tr>{% endfor %}</table>{% else %}<p>No tasks yet.</p>{% endif %}</div>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Tasks{% endblock %}
+{% block page_heading %}Tasks{% endblock %}
+{% block page_subheading %}Keep every important business action visible.{% endblock %}
+
+{% block content %}
+<div class="card-grid">
+{% if tasks %}
+    {% for task in tasks %}
+    <article class="operator-card-modern">
+        <div class="card-title-row">
+            <div>
+                <span class="panel-kicker">{{ task[5] or "NORMAL" }}</span>
+                <h3>{{ task[1] }}</h3>
+            </div>
+            <span class="status-chip">{{ task[3] }}</span>
+        </div>
+
+        <p class="task-description">{{ task[2] or "" }}</p>
+
+        {% if task[6] %}<div class="due-line">Due: {{ task[6] }}</div>{% endif %}
+
+        {% if task[3] != "Completed" %}
+        <form method="POST" action="{{ url_for('complete_task', task_id=task[0]) }}">
+            <button type="submit" class="btn-success full">Complete Task</button>
+        </form>
+        {% endif %}
+    </article>
+    {% endfor %}
+{% else %}
+    <div class="operator-empty">No tasks yet.</div>
+{% endif %}
+</div>
+{% endblock %}

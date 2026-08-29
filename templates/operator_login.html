@@ -1,17 +1,13 @@
 {% extends "public_base.html" %}
-
 {% block title %}Operator Login | BizFlow SA{% endblock %}
-
 {% block content %}
 <section class="operator-login-page">
     <div class="login-card-modern">
-        <div class="bf-logo login-logo"><span class="bf-logo-b">B</span></div>
+        <div class="bf-logo login-logo"><span>B</span></div>
         <div class="pill-label">PRIVATE CONTROL CENTRE</div>
         <h1>BizFlow Operator</h1>
         <p>Sign in to access your sales, marketing and automation control centre.</p>
-
         {% if error %}<div class="form-error">{{ error }}</div>{% endif %}
-
         <form method="POST">
             <label>Operator password</label>
             <input type="password" name="password" placeholder="Enter password" required>

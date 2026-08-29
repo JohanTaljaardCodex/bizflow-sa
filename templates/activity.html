@@ -1,1 +1,22 @@
-{% extends "base.html" %}{% block title %}Activity{% endblock %}{% block content %}<div class="card"><h2>Operator Activity</h2>{% for i in activity %}<div class="activity-item"><div class="activity-title">{{ i[0] }}</div><div class="activity-text">{{ i[1] }}</div><div class="activity-time">{{ i[2] }}</div></div>{% else %}<p>No activity yet.</p>{% endfor %}</div>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Activity{% endblock %}
+{% block page_heading %}Activity{% endblock %}
+{% block page_subheading %}A live record of what BizFlow and the operator have done.{% endblock %}
+
+{% block content %}
+<section class="operator-panel">
+    {% if activity %}
+        {% for item in activity %}
+        <div class="activity-feed-row activity-large">
+            <div>
+                <strong>{{ item[0] }}</strong>
+                <span>{{ item[1] }}</span>
+            </div>
+            {% if item[2] %}<small>{{ item[2] }}</small>{% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="operator-empty">No activity yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

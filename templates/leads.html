@@ -1,4 +1,59 @@
-{% extends "base.html" %}{% block title %}Sales Pipeline{% endblock %}{% block content %}
-<div class="card"><div class="section-heading"><div><h2>Sales Pipeline</h2><div class="meta">Manage opportunities through each stage.</div></div><a href="{{ url_for('contact_page') }}"><button class="primary">+ Add New Lead</button></a></div></div>
-<div class="pipeline-board">{% for stage in ["New Lead","Follow Up","Contacted","Interested","Proposal","Won","Lost"] %}<div class="pipeline-column"><div class="pipeline-header"><strong>{{ stage }}</strong><span class="pipeline-count">{{ pipeline_counts.get(stage,0) }}</span></div><div class="pipeline-body">{% for lead in leads %}{% if lead[9]==stage %}<div class="pipeline-card"><div class="pipeline-card-top"><div><div class="pipeline-name">{{ lead[1] }}</div><div class="meta">{{ lead[4] or 'Unknown source' }}</div></div><span class="badge {% if (lead[14] or 0)>=80 %}badge-red{% elif (lead[14] or 0)>=60 %}badge-orange{% endif %}">{{ lead[14] or 0 }}</span></div><div class="pipeline-info"><div><span class="pipeline-label">Value</span><strong>R {{ "%.0f"|format(lead[10] or 0) }}</strong></div><div><span class="pipeline-label">Score</span><strong>{{ lead[14] or 0 }}/100</strong></div></div>{% if lead[11] %}<div class="followup-line">Follow-up <strong>{{ lead[11] }}</strong></div>{% endif %}<a href="{{ url_for('lead_detail', lead_id=lead[0]) }}" class="pipeline-open">Open Lead</a></div>{% endif %}{% endfor %}{% if pipeline_counts.get(stage,0)==0 %}<div class="pipeline-empty">No leads</div>{% endif %}</div></div>{% endfor %}</div>
+{% extends "base.html" %}
+{% block title %}Opportunities{% endblock %}
+{% block page_heading %}Sales Pipeline{% endblock %}
+{% block page_subheading %}Manage opportunities through each stage.{% endblock %}
+
+{% block content %}
+<div class="page-actions">
+    <a href="{{ url_for('contact_page') }}" class="btn-purple">+ Add New Lead</a>
+</div>
+
+<div class="pipeline-board-modern">
+{% for stage in ["New Lead","Follow Up","Contacted","Interested","Proposal","Won","Lost"] %}
+    <section class="pipeline-stage">
+        <div class="pipeline-stage-head">
+            <div>
+                <span class="stage-dot"></span>
+                <strong>{{ stage }}</strong>
+            </div>
+            <span class="stage-count">{{ pipeline_counts.get(stage, 0) }}</span>
+        </div>
+
+        <div class="pipeline-stage-body">
+            {% set ns = namespace(found=false) %}
+            {% for lead in leads %}
+                {% if lead[9] == stage %}
+                    {% set ns.found = true %}
+                    <article class="lead-tile">
+                        <div class="lead-tile-head">
+                            <div class="lead-avatar">{{ (lead[1] or "?")[0]|upper }}</div>
+                            <div>
+                                <h3>{{ lead[1] or "Unnamed Lead" }}</h3>
+                                <span>{{ lead[4] or "Unknown source" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="lead-tile-metrics">
+                            <div><span>Value</span><strong>R{{ "%.0f"|format(lead[10] or 0) }}</strong></div>
+                            <div><span>Score</span><strong>{{ lead[14] or 0 }}/100</strong></div>
+                        </div>
+
+                        {% if lead[11] %}
+                        <div class="lead-followup">
+                            Follow-up: {{ lead[11] }}
+                        </div>
+                        {% endif %}
+
+                        <a href="{{ url_for('lead_detail', lead_id=lead[0]) }}" class="lead-open">Open Lead →</a>
+                    </article>
+                {% endif %}
+            {% endfor %}
+
+            {% if not ns.found %}
+                <div class="stage-empty">No leads</div>
+            {% endif %}
+        </div>
+    </section>
+{% endfor %}
+</div>
 {% endblock %}

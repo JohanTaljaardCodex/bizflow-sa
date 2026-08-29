@@ -1,1 +1,65 @@
-{% extends "base.html" %}{% block title %}Lead - {{ lead[1] }}{% endblock %}{% block content %}<div class="grid"><div><div class="card"><h2>{{ lead[1] }}</h2><div class="meta">Email: {{ lead[2] or 'Not supplied' }}</div><div class="meta">Phone: {{ lead[3] or 'Not supplied' }}</div><div class="meta">Source: {{ lead[4] }}</div><div class="meta">Stage: <strong>{{ lead[9] }}</strong></div><div class="meta">Score: <strong>{{ lead[14] }}/100</strong></div><div class="meta">Value: <strong>R {{ "%.2f"|format(lead[10] or 0) }}</strong></div></div>{% if lead[7] %}<div class="card"><h2>AI Follow-Up</h2><div class="draft-box">{{ lead[7] }}</div><div class="meta">Status: {{ lead[8] }}</div><div class="actions">{% if lead[8]=='Pending Approval' %}<form method="POST" action="/lead/{{ lead[0] }}/approve-followup"><button class="green">Approve</button></form>{% endif %}<form method="POST" action="/lead/{{ lead[0] }}/regenerate-followup"><button class="dark">Regenerate</button></form></div></div>{% endif %}<div class="card"><h2>Lead Details</h2><form method="POST" action="/lead/{{ lead[0] }}/update"><label>Notes</label><textarea name="notes">{{ lead[12] or '' }}</textarea><label>Lead Value</label><input type="number" step="0.01" name="lead_value" value="{{ lead[10] or 0 }}"><label>Next Follow-Up</label><input type="datetime-local" name="next_followup" value="{{ lead[11] or '' }}"><button class="primary">Save Lead</button></form></div></div><div><div class="card"><h2>Move Stage</h2>{% for stage in stages %}<form method="POST" action="/lead/{{ lead[0] }}/stage/{{ stage }}"><button class="{% if stage=='Won' %}green{% elif stage=='Lost' %}red{% else %}dark{% endif %}" style="width:100%;margin-bottom:8px">{{ stage }}</button></form>{% endfor %}</div><div class="card"><h2>Actions</h2><form method="POST" action="/lead/{{ lead[0] }}/contacted"><button class="orange" style="width:100%;margin-bottom:8px">Mark Contacted</button></form><form method="POST" action="/lead/{{ lead[0] }}/convert"><button class="green" style="width:100%">Convert to Customer</button></form></div></div></div>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Lead{% endblock %}
+{% block page_heading %}{{ lead[1] }}{% endblock %}
+{% block page_subheading %}Manage this opportunity and keep the next action clear.{% endblock %}
+
+{% block content %}
+<div class="detail-grid">
+    <section class="operator-panel">
+        <div class="panel-head"><div><span class="panel-kicker">OPPORTUNITY</span><h2>Lead Details</h2></div></div>
+
+        <div class="detail-list">
+            <div><span>Email</span><strong>{{ lead[2] or "—" }}</strong></div>
+            <div><span>Phone</span><strong>{{ lead[3] or "—" }}</strong></div>
+            <div><span>Source</span><strong>{{ lead[4] or "—" }}</strong></div>
+            <div><span>Status</span><strong>{{ lead[5] or "—" }}</strong></div>
+            <div><span>Stage</span><strong>{{ lead[9] or "—" }}</strong></div>
+            <div><span>Score</span><strong>{{ lead[14] or 0 }}/100</strong></div>
+        </div>
+    </section>
+
+    <section class="operator-panel">
+        <div class="panel-head"><div><span class="panel-kicker">UPDATE</span><h2>Opportunity</h2></div></div>
+
+        <form method="POST" action="{{ url_for('update_lead', lead_id=lead[0]) }}">
+            <label>Lead Value</label>
+            <input type="number" step="0.01" name="lead_value" value="{{ lead[10] or 0 }}">
+
+            <label>Next Follow-Up</label>
+            <input type="datetime-local" name="next_followup" value="{{ lead[11] or '' }}">
+
+            <label>Notes</label>
+            <textarea name="notes">{{ lead[12] or '' }}</textarea>
+
+            <button class="btn-purple full" type="submit">Save Changes</button>
+        </form>
+    </section>
+</div>
+
+<section class="operator-panel">
+    <div class="panel-head"><div><span class="panel-kicker">PIPELINE</span><h2>Move Stage</h2></div></div>
+    <div class="stage-actions">
+        {% for stage in stages %}
+        <form method="POST" action="{{ url_for('move_lead_stage', lead_id=lead[0], stage=stage) }}">
+            <button type="submit" class="stage-btn {% if lead[9] == stage %}active{% endif %}">{{ stage }}</button>
+        </form>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="operator-panel">
+    <div class="panel-head"><div><span class="panel-kicker">AI FOLLOW-UP</span><h2>Draft</h2></div></div>
+
+    {% if lead[7] %}
+        <div class="ai-response">{{ lead[7] }}</div>
+        <div class="inline-actions">
+            <form method="POST" action="{{ url_for('approve_followup', lead_id=lead[0]) }}"><button class="btn-success" type="submit">Approve</button></form>
+            <form method="POST" action="{{ url_for('regenerate_followup', lead_id=lead[0]) }}"><button class="btn-dark" type="submit">Regenerate</button></form>
+            <form method="POST" action="{{ url_for('mark_lead_contacted', lead_id=lead[0]) }}"><button class="btn-warning" type="submit">Mark Contacted</button></form>
+            <form method="POST" action="{{ url_for('convert_lead', lead_id=lead[0]) }}"><button class="btn-purple" type="submit">Convert to Customer</button></form>
+        </div>
+    {% else %}
+        <div class="operator-empty">No AI follow-up draft yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

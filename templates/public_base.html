@@ -12,10 +12,8 @@
 <header class="public-header">
     <div class="public-nav">
         <a href="{{ url_for('home') }}" class="brand brand-public">
-            <div class="bf-logo">
-                <span class="bf-logo-b">B</span>
-            </div>
-            <div class="brand-name">BIZFLOW <span>SA</span></div>
+            <div class="bf-logo"><span>B</span></div>
+            <div class="brand-name">BIZFLOW <b>SA</b></div>
         </a>
 
         <nav class="public-links">
@@ -33,16 +31,14 @@
     </div>
 </header>
 
-<main>
-    {% block content %}{% endblock %}
-</main>
+<main>{% block content %}{% endblock %}</main>
 
 <footer class="site-footer">
     <div class="site-footer-inner">
         <div>
-            <div class="brand brand-footer">
-                <div class="bf-logo small-logo"><span class="bf-logo-b">B</span></div>
-                <div class="brand-name">BIZFLOW <span>SA</span></div>
+            <div class="brand">
+                <div class="bf-logo small"><span>B</span></div>
+                <div class="brand-name">BIZFLOW <b>SA</b></div>
             </div>
             <p>Smarter systems. Stronger businesses.</p>
         </div>

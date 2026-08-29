@@ -6,53 +6,31 @@
     <title>{% block title %}BizFlow SA{% endblock %} | Operator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body class="operator-body">
-<div class="operator-shell">
 
+<div class="operator-shell">
     <aside class="operator-sidebar">
         <div>
             <a href="{{ url_for('dashboard') }}" class="brand operator-brand">
-                <div class="bf-logo sidebar-logo"><span class="bf-logo-b">B</span></div>
-                <div class="brand-name">BIZFLOW <span>SA</span></div>
+                <div class="bf-logo small"><span>B</span></div>
+                <div class="brand-name">BIZFLOW <b>SA</b></div>
             </a>
 
             <nav class="operator-nav">
-                <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint in ['dashboard','daily_priorities'] %}active{% endif %}">
-                    <span>▣</span> Dashboard
-                </a>
-                <a href="{{ url_for('leads_page') }}" class="{% if request.endpoint in ['leads_page','lead_detail'] %}active{% endif %}">
-                    <span>◎</span> Opportunities
-                </a>
-                <a href="{{ url_for('prospects_page') }}" class="{% if request.endpoint=='prospects_page' %}active{% endif %}">
-                    <span>⌕</span> Prospects
-                    {% if nav_prospect_count>0 %}<b>{{ nav_prospect_count }}</b>{% endif %}
-                </a>
-                <a href="{{ url_for('customers_page') }}" class="{% if request.endpoint=='customers_page' %}active{% endif %}">
-                    <span>♙</span> Customers
-                </a>
-                <a href="{{ url_for('tasks_page') }}" class="{% if request.endpoint=='tasks_page' %}active{% endif %}">
-                    <span>☑</span> Tasks
-                    {% if nav_task_count>0 %}<b>{{ nav_task_count }}</b>{% endif %}
-                </a>
+                <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint in ['dashboard','daily_priorities'] %}active{% endif %}"><span>▣</span>Dashboard</a>
+                <a href="{{ url_for('leads_page') }}" class="{% if request.endpoint in ['leads_page','lead_detail'] %}active{% endif %}"><span>◎</span>Opportunities</a>
+                <a href="{{ url_for('prospects_page') }}" class="{% if request.endpoint=='prospects_page' %}active{% endif %}"><span>⌕</span>Prospects{% if nav_prospect_count>0 %}<b>{{ nav_prospect_count }}</b>{% endif %}</a>
+                <a href="{{ url_for('customers_page') }}" class="{% if request.endpoint=='customers_page' %}active{% endif %}"><span>♙</span>Customers</a>
+                <a href="{{ url_for('tasks_page') }}" class="{% if request.endpoint=='tasks_page' %}active{% endif %}"><span>☑</span>Tasks{% if nav_task_count>0 %}<b>{{ nav_task_count }}</b>{% endif %}</a>
 
                 <div class="operator-nav-section">GROWTH</div>
-
-                <a href="{{ url_for('content_page') }}" class="{% if request.endpoint=='content_page' %}active{% endif %}">
-                    <span>▰</span> Content
-                </a>
-                <a href="{{ url_for('approvals_page') }}" class="{% if request.endpoint=='approvals_page' %}active{% endif %}">
-                    <span>✓</span> Approvals
-                    {% if nav_approval_count>0 %}<b class="danger">{{ nav_approval_count }}</b>{% endif %}
-                </a>
-                <a href="{{ url_for('activity_page') }}" class="{% if request.endpoint=='activity_page' %}active{% endif %}">
-                    <span>↻</span> Activity
-                </a>
+                <a href="{{ url_for('content_page') }}" class="{% if request.endpoint=='content_page' %}active{% endif %}"><span>▰</span>Content</a>
+                <a href="{{ url_for('approvals_page') }}" class="{% if request.endpoint=='approvals_page' %}active{% endif %}"><span>✓</span>Approvals{% if nav_approval_count>0 %}<b class="danger">{{ nav_approval_count }}</b>{% endif %}</a>
+                <a href="{{ url_for('activity_page') }}" class="{% if request.endpoint=='activity_page' %}active{% endif %}"><span>↻</span>Activity</a>
 
                 <div class="operator-nav-section">SYSTEM</div>
-
-                <a href="{{ url_for('home') }}"><span>↗</span> Public Website</a>
-                <a href="{{ url_for('operator_logout') }}"><span>⇥</span> Log Out</a>
+                <a href="{{ url_for('home') }}"><span>↗</span>Public Website</a>
+                <a href="{{ url_for('operator_logout') }}"><span>⇥</span>Log Out</a>
             </nav>
         </div>
 
@@ -61,24 +39,16 @@
                 <div class="operator-avatar-modern">AI</div>
                 <div>
                     <strong>BizFlow Operator</strong>
-                    <span>
-                        <i class="status-dot status-{{ operator.status_class }}"></i>
-                        {{ operator.status }}
-                    </span>
+                    <span><i class="status-dot status-{{ operator.status_class }}"></i>{{ operator.status }}</span>
                 </div>
             </div>
             <small>{{ operator.last_seen_text }}</small>
         </div>
     </aside>
 
-    <div class="operator-main">
+    <section class="operator-main">
         <header class="operator-topbar">
-            <div class="topbar-brand-mobile">BIZFLOW SA</div>
-
-            <div class="operator-welcome">
-                Welcome back, <strong>Operator</strong>
-            </div>
-
+            <div class="operator-welcome">Welcome back, <strong>Operator</strong></div>
             <div class="operator-top-actions">
                 <a href="{{ url_for('contact_page') }}" class="top-icon-btn">＋</a>
                 <div class="top-avatar">OP</div>
@@ -95,8 +65,8 @@
 
             {% block content %}{% endblock %}
         </main>
-    </div>
-
+    </section>
 </div>
+
 </body>
 </html>

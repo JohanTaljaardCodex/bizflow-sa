@@ -1,71 +1,39 @@
 {% extends "base.html" %}
-
 {% block title %}Dashboard{% endblock %}
 {% block page_heading %}Dashboard{% endblock %}
 {% block page_subheading %}Here’s what’s happening with your business today.{% endblock %}
 
 {% block content %}
-
 <section class="operator-stats">
-    <div class="metric-card">
-        <span>Open Tasks</span>
-        <strong>{{ task_count }}</strong>
-        <small>Current workload</small>
-    </div>
-
-    <div class="metric-card">
-        <span>Hot Leads</span>
-        <strong>{{ hot_lead_count }}</strong>
-        <small>High-priority opportunities</small>
-    </div>
-
-    <div class="metric-card">
-        <span>Customers</span>
-        <strong>{{ customer_count }}</strong>
-        <small>Converted business</small>
-    </div>
-
-    <div class="metric-card">
-        <span>Pipeline</span>
-        <strong>R{{ "%.0f"|format(pipeline_value or 0) }}</strong>
-        <small>Active opportunity value</small>
-    </div>
+    <div class="metric-card"><span>Open Tasks</span><strong>{{ task_count }}</strong><small>Current workload</small></div>
+    <div class="metric-card"><span>Hot Leads</span><strong>{{ hot_lead_count }}</strong><small>High-priority opportunities</small></div>
+    <div class="metric-card"><span>Customers</span><strong>{{ customer_count }}</strong><small>Converted business</small></div>
+    <div class="metric-card"><span>Pipeline</span><strong>R{{ "%.0f"|format(pipeline_value or 0) }}</strong><small>Active opportunity value</small></div>
 </section>
 
 <section class="operator-grid-main">
     <div class="operator-panel">
         <div class="panel-head">
-            <div>
-                <span class="panel-kicker">PIPELINE OVERVIEW</span>
-                <h2>Sales Funnel</h2>
-            </div>
+            <div><span class="panel-kicker">PIPELINE OVERVIEW</span><h2>Sales Funnel</h2></div>
             <a href="{{ url_for('leads_page') }}">View Pipeline →</a>
         </div>
-
         <div class="funnel">
-            <div class="funnel-row wide"><span>New</span><strong>{{ hot_lead_count + 1 }}</strong></div>
-            <div class="funnel-row medium"><span>Active</span><strong>{{ hot_lead_count }}</strong></div>
-            <div class="funnel-row small"><span>Won</span><strong>{{ customer_count }}</strong></div>
+            <div class="funnel-row wide"><span>Hot Leads</span><strong>{{ hot_lead_count }}</strong></div>
+            <div class="funnel-row medium"><span>Customers</span><strong>{{ customer_count }}</strong></div>
+            <div class="funnel-row small"><span>Won Value</span><strong>R{{ "%.0f"|format(won_value or 0) }}</strong></div>
         </div>
     </div>
 
     <div class="operator-panel">
         <div class="panel-head">
-            <div>
-                <span class="panel-kicker">RECENT ACTIVITY</span>
-                <h2>Live Feed</h2>
-            </div>
+            <div><span class="panel-kicker">RECENT ACTIVITY</span><h2>Live Feed</h2></div>
             <a href="{{ url_for('activity_page') }}">View All →</a>
         </div>
-
         <div class="activity-feed">
             {% if activity %}
                 {% for item in activity %}
                 <div class="activity-feed-row">
-                    <div>
-                        <strong>{{ item[0] }}</strong>
-                        <span>{{ item[1] }}</span>
-                    </div>
+                    <div><strong>{{ item[0] }}</strong><span>{{ item[1] }}</span></div>
                     {% if item[2] %}<small>{{ item[2] }}</small>{% endif %}
                 </div>
                 {% endfor %}
@@ -79,39 +47,18 @@
 <section class="operator-grid-secondary">
     <div class="operator-panel">
         <div class="panel-head">
-            <div>
-                <span class="panel-kicker">TODAY</span>
-                <h2>AI Priorities</h2>
-            </div>
-            <form method="POST" action="{{ url_for('daily_priorities') }}">
-                <button class="btn-purple tiny" type="submit">Generate</button>
-            </form>
+            <div><span class="panel-kicker">TODAY</span><h2>AI Priorities</h2></div>
+            <form method="POST" action="{{ url_for('daily_priorities') }}"><button class="btn-purple tiny" type="submit">Generate</button></form>
         </div>
-
-        {% if priorities %}
-            <div class="ai-response">{{ priorities }}</div>
-        {% else %}
-            <div class="operator-empty">
-                Generate today’s priorities and let the operator tell you what needs attention first.
-            </div>
-        {% endif %}
+        {% if priorities %}<div class="ai-response">{{ priorities }}</div>{% else %}<div class="operator-empty">Generate today’s priorities and let the operator tell you what needs attention first.</div>{% endif %}
     </div>
 
     <div class="operator-panel">
-        <div class="panel-head">
-            <div>
-                <span class="panel-kicker">HOT OPPORTUNITIES</span>
-                <h2>Leads to Watch</h2>
-            </div>
-        </div>
-
+        <div class="panel-head"><div><span class="panel-kicker">HOT OPPORTUNITIES</span><h2>Leads to Watch</h2></div></div>
         {% if hot_leads %}
             {% for lead in hot_leads %}
             <a href="{{ url_for('lead_detail', lead_id=lead[0]) }}" class="hot-opportunity">
-                <div>
-                    <strong>{{ lead[1] }}</strong>
-                    <span>{{ lead[9] }} · Score {{ lead[14] or 0 }}</span>
-                </div>
+                <div><strong>{{ lead[1] }}</strong><span>{{ lead[9] }} · Score {{ lead[14] or 0 }}</span></div>
                 <b>R{{ "%.0f"|format(lead[10] or 0) }}</b>
             </a>
             {% endfor %}
@@ -120,22 +67,4 @@
         {% endif %}
     </div>
 </section>
-
-<section class="operator-panel quick-actions-panel">
-    <div class="panel-head">
-        <div>
-            <span class="panel-kicker">QUICK ACTIONS</span>
-            <h2>Move Faster</h2>
-        </div>
-    </div>
-
-    <div class="quick-action-grid">
-        <a href="{{ url_for('contact_page') }}"><span>◎＋</span><strong>Add Lead</strong></a>
-        <a href="{{ url_for('tasks_page') }}"><span>☑</span><strong>Tasks</strong></a>
-        <a href="{{ url_for('content_page') }}"><span>▰</span><strong>Content</strong></a>
-        <a href="{{ url_for('approvals_page') }}"><span>✓</span><strong>Approvals</strong></a>
-        <a href="{{ url_for('activity_page') }}"><span>▥</span><strong>Activity</strong></a>
-    </div>
-</section>
-
 {% endblock %}

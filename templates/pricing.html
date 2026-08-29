@@ -1,7 +1,5 @@
 {% extends "public_base.html" %}
-
 {% block title %}Packages | BizFlow SA{% endblock %}
-
 {% block content %}
 <section class="subpage-hero">
     <div class="public-shell narrow">
@@ -10,7 +8,6 @@
         <p>Choose the level that matches where your business is today.</p>
     </div>
 </section>
-
 <section class="dark-section">
     <div class="public-shell">
         <div class="pricing-grid">
@@ -18,33 +15,22 @@
                 <div class="price-kicker">STARTER</div>
                 <h2>AI Starter</h2>
                 <p class="price-copy">Build the foundation for leads, follow-up and business organisation.</p>
-                <ul>
-                    <li>Lead capture</li><li>CRM & pipeline</li><li>AI follow-up support</li>
-                    <li>Tasks</li><li>Content support</li><li>Control centre</li>
-                </ul>
+                <ul><li>Lead capture</li><li>CRM & pipeline</li><li>AI follow-up support</li><li>Tasks</li><li>Content support</li><li>Control centre</li></ul>
                 <a href="{{ url_for('contact_page') }}" class="btn-outline full">Enquire</a>
             </article>
-
             <article class="pricing-card featured">
                 <div class="popular-tag">MOST POPULAR</div>
                 <div class="price-kicker">GROWTH</div>
                 <h2>AI Growth</h2>
                 <p class="price-copy">Add stronger sales, marketing, prospecting and automation.</p>
-                <ul>
-                    <li>Everything in Starter</li><li>Prospecting workflows</li><li>Outreach preparation</li>
-                    <li>Marketing automation</li><li>Social workflows</li><li>Advanced automation</li>
-                </ul>
+                <ul><li>Everything in Starter</li><li>Prospecting workflows</li><li>Outreach preparation</li><li>Marketing automation</li><li>Social workflows</li><li>Advanced automation</li></ul>
                 <a href="{{ url_for('contact_page') }}" class="btn-purple full">Talk About Growth</a>
             </article>
-
             <article class="pricing-card">
                 <div class="price-kicker">OPERATOR</div>
                 <h2>AI Operator</h2>
-                <p class="price-copy">Build toward an active AI-assisted operating layer for the business.</p>
-                <ul>
-                    <li>Everything in Growth</li><li>Scheduled AI cycles</li><li>Prioritisation</li>
-                    <li>Advanced workflows</li><li>Connected operations</li><li>Ongoing optimisation</li>
-                </ul>
+                <p class="price-copy">Build toward an active AI-assisted operating layer.</p>
+                <ul><li>Everything in Growth</li><li>Scheduled AI cycles</li><li>Prioritisation</li><li>Advanced workflows</li><li>Connected operations</li><li>Ongoing optimisation</li></ul>
                 <a href="{{ url_for('contact_page') }}" class="btn-outline full">Discuss Operator</a>
             </article>
         </div>
